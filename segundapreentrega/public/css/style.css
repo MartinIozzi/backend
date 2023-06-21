@@ -1,0 +1,63 @@
+body{
+    background-color: rgb(91, 161, 70);
+}
+
+.cart{
+  width: 100px;
+  height: 40px;
+  background-color: rgb(39, 39, 247);
+  color: rgb(255, 255, 255);
+}
+
+.container {  
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.2fr 1fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "titulo titulo titulo"
+      "formulario formulario formulario"
+      "productos productos productos";
+  }
+
+  .titulo {
+    font-family: monospace;
+    grid-area: titulo;
+} 
+  
+  .productos {  
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    margin-right: 20px;
+    font-family: cursive;
+    grid-area: productos;
+}
+
+.nameProduct{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.contForm{
+    background: #8e9eab;
+    background: -webkit-linear-gradient(to right, #aaaaaa, #8e9eab);
+    background: linear-gradient(to right, #c8caca, #8e9eab);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 100vh;
+    height: 300px;    
+    margin-left: -50vh;
+    margin-top: -150px;
+}
+
+.fondo{
+  background: #c2e59c;
+  background: -webkit-linear-gradient(to left, #64b3f4, #c2e59c);
+  background: linear-gradient(to left, #64b3f4, #c2e59c);
+}
+
+.navBar{
+  background-color: rgb(196, 248, 255);
+}
