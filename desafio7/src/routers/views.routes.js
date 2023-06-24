@@ -16,7 +16,7 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
         try {
             const prods = await productService.findWithPagination(limit, sort, query, page)
             const productList = await productService.getProducts();
-            res.render('index', {products: productList, user, prods})
+            res.render('index', {products: productList, user, prods, title: 'Lista de productos'})
           } catch (err) {
             res.status(500).send({err});
         }

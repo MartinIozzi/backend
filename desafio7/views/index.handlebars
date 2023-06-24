@@ -1,17 +1,24 @@
 <div class="container">
   <div class="titulo"><h1>Lista de productos</h1></div>
-  <div class="productos">  
-    <hr></hr> 
-        {{#each products}}
-        <h3 class="nameProduct">Nombre: {{this.name}}</h3>
-        <p>Descripcion: {{this.description}}</p>
-        <p>Precio: {{this.price}}</p>
-        <p>Codigo del producto: {{this.code}}</p>
-        <p>Stock restante: {{this.stock}} productos</p>
-        <p>Tipo de producto: {{this.type}}</p>
-        <div>Archivo: {{this.img}}</div>
-        <hr></hr>
-        {{/each}}
+  <div class="row pt-2 ms-2 productos" style="gap: 10px;">  
+    {{#each products}}
+    <div class="col-md-3 card bg-dark-subtle display bg-dark-subtle" style="width: 22rem;">
+        <div class="card-body" >
+        <img src="{{this.img}}" class="card-img-top" style="width: 12rem;" alt="...">
+          <h4 class="card-title">{{this.name}}</h4>
+          <hr></hr>
+          <p class="card-text">{{this.description}}</p>
+          <hr></hr>
+          <p class="card-text">{{this.price}}</p>
+          <hr></hr>
+          <p class="card-text">{{this.code}}</p>
+          <hr></hr>
+          <p class="card-text">{{this.stock}}</p>
+          <hr></hr>
+          <p class="card-text">{{this.type}}</p>
+          <hr></hr>
+        </div>
     </div>
+    {{/each}}
 </div>
 

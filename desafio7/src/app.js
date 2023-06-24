@@ -8,6 +8,13 @@ import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo'
 
 const app = express();
+
+app.use(express.static('public/'));
+app.use(express.json())
+app.use(express.urlencoded({extended: true}));
+app.engine('handlebars', handlebars.engine());
+app.set('views' , 'views/' );
+app.set('view engine','handlebars');
 //-------------------------------------------------------//
 
 //Parte JSON del proyecto (solo habilitar para switchear entre el JSON y mongoDB si uno de ellos está deshabilitado)
@@ -62,13 +69,6 @@ app.use('/api/users', userRouter);
 mongoose.connect('mongodb+srv://Martin:UfuzAWX8YTmXatWX@ecommerce.buljm7y.mongodb.net/?retryWrites=true&w=majority')
 
 //-------------------------------------------------------//
-
-app.use(express.static('public/'));
-app.use(express.json())
-app.use(express.urlencoded({extended: true}));
-app.engine('handlebars', handlebars.engine());
-app.set('views' , 'views/' );
-app.set('view engine','handlebars');
 
 const port = 8080;
 
