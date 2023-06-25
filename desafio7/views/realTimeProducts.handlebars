@@ -7,7 +7,13 @@
         <input type="number" required id="price" name="price" placeholder="Precio del producto a publicar"><br>
         <input type="text" required id="code" name="code" placeholder="Código del producto"><br>
         <input type="number" required id="stock" name="stock" placeholder="Stock del producto a publicar"><br>
-        <input type="text" required id="type" name="type" placeholder="Tipo de producto a publicar"><br>
+        <div>
+  <input type="text" id="type" list="opciones" placeholder="Tipo de producto a publicar">
+  <datalist id="opciones">
+    <option value="Componentes de PC">
+    <option value="Celulares">
+  </datalist>
+</div>
         <input type="file" required id="img" name="img" placeholder="Foto!" />
     </form>
     <button type="submit" id="boton">Enviar</button> <br>

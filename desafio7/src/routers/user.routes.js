@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userService from '../services/user.service.js';
+import { cartService } from '../services/cart.service.js';
 
 const usersRouter = Router();
 
@@ -7,9 +8,12 @@ usersRouter.post('/', async (req, res) => {
 	const userData = req.body;
 	try {
 		const newUser = await userService.createUser(userData);
+		const cart = await cartService.addCart();
+		newUser.cart = cart._id;
+		await user.save();
 		res.status(201).json(newUser);
 	} catch (error) {
-		res.status(400).json({ error});
+		res.status(400).json({error});
 	}
 });
 

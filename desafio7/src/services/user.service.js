@@ -9,6 +9,14 @@ class UserService {
         return await this.model.find();
     }
 
+    async getCurrentUser(req) {
+        const token = req.headers.authorization;   
+        const decodedToken = jwt.verify(token, 'l2YQI4AjpU4Ks'); // clave secreta para firmar los tokens
+        const userId = decodedToken.userId;
+        const user = await this.model.findById(userId);
+        return user;
+    }
+
     async getByEmail(email){
         return await this.model.findOne({email: email});
     }
