@@ -4,13 +4,18 @@ import { productService } from "../services/product.service.js";
 const viewsRoutes = Router();
 
 viewsRoutes.get ('/', async (req, res) => {
-    try {
-        const productsList = await productService.getProducts()
-        res.render('index', {products: productsList, title: 'Inicio'});
-    } catch (err) {
-        res.status(500).send({err})
-    }
-})
+        const limit = parseInt(req.query.limit) || 10;
+        const sort = req.query.sort === 'desc' ? -1 : 1;
+        const query = req.query.query || '';
+        const page = parseInt(req.query.page) || 1;
+        try {
+            const prods= await productService.findWithPagination(limit, sort, query, page)
+            const productsList = await productService.getProducts();
+            res.send(prods)
+          } catch (err) {
+            res.status(500).send({err});
+        }
+});
 
 viewsRoutes.get ('/realtimeproducts', async (req, res) => {
     try {
@@ -22,8 +27,7 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
 
 viewsRoutes.get ('/products', async (req, res) => {
     try {
-        //const productsList = await productService.getProducts()
-        res.render('products', {/*products: productsList,*/ title: 'Productos'});
+        res.render('products', {title: 'Productos'});
     } catch (err) {
         res.status(500).send({err})
     }
@@ -31,17 +35,8 @@ viewsRoutes.get ('/products', async (req, res) => {
 
 viewsRoutes.get('/carts', async (req, res) => {
     try{
-        const productsList = await productService.getProducts()
         res.render('carts', { title: 'Carrito'});
     } catch(err){
-        res.status(500).send({err});
-    }
-})
-
-viewsRoutes.get('/login', async (req, res) => {
-    try{
-        res.render('login', {title: 'Login'});
-    } catch (err) {
         res.status(500).send({err});
     }
 })

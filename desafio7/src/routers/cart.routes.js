@@ -33,7 +33,6 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const productId = req.params.pid;
     const cartId = req.params.cid;
     try {
-        const user = await userService.getUser();
         await cartService.addProdToCart(cartId, productId);
         res.status(201).send(await cartService.getCurrentUser())
     } catch (e) {

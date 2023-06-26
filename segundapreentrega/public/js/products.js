@@ -1,9 +1,6 @@
 const socket = io();
 
-function render (products) {
-    let cartId = cart.map((cid)=> {
-      return cid._id;
-    })
+function render (products, cid) {
     let html = products.map((elem) => {
         return `<div class="col-md-3 card display bg-dark-subtle" style="width: 22rem;">
         <div class="card-body">
@@ -23,7 +20,7 @@ function render (products) {
           <button class="btn-eliminar btn btn-danger" id="${elem._id}">Eliminar producto</button>
         </div>
         <hr>
-        <form action="/api/carts/${cartId}/products/${elem._id}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
+        <form action="/api/carts/${cid}/products/${elem._id}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
       </div>`
       
     }).join(' ');
