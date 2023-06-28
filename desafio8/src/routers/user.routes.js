@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import userService from '../services/user.service.js';
 import { cartService } from '../services/cart.service.js';
+import { hashPassword, comparePassword } from '../utils/encript.js';
 
 const usersRouter = Router();
 
 usersRouter.post('/', async (req, res) => {
-	const userData = req.body;
+	const userData = {...req.body, password: hashPassword(req.body.password)};
 	try {
 		const newUser = await userService.createUser(userData);
 		const cart = await cartService.addCart();
@@ -23,7 +24,8 @@ usersRouter.post('/auth', async (req, res) => {
 		const user = await userService.getByEmail(email);
 
 		if (!user) throw new Error('Usuario no encontrado');
-		if (user.password !== password) throw new Error('Contraseña incorrecta');
+		if (!comparePassword(user, password)) throw new Error('Contraseña incorrecta');
+		delete user.password;
 
 		req.session.user = user;
 
