@@ -9,7 +9,7 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
         delete user.password;
         
         const limit = parseInt(req.query.limit) || 10;
-        const sort = req.query.sort === 'desc' ? -1 : 1;
+        const sort = req.query.sort === 'desc' ? { desc: -1 } : { asc: 1 };
         const query = req.query.query || '';
         const page = parseInt(req.query.page) || 1;
 
@@ -31,9 +31,10 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
 })
 
 viewsRoutes.get ('/products', async (req, res) => {
-    const cid = req.params.cid;
     try {
-        res.render('products', {title: 'Productos', cid: cid});
+        const products = await productService.getProducts()
+        const cartId = req.cookies.cartId;
+        res.render('products', {title: 'Productos', products: products, cartId: cartId });
     } catch (err) {
         res.status(500).send({err})
     }

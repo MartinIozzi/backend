@@ -17,12 +17,16 @@ class ProductService {
     }
 
     async findWithPagination(limit, sort, query, page){
-        const options = {lean: true, page, limit, sort, query};
-        console.log(options);
-        const prods = await this.model.paginate(options);
-        console.log(prods);
-        
-        return prods;
+        try {
+            const options = {lean: true, page, limit, sort};
+            console.log(options);
+            const prods = await this.model.paginate(query, options);
+            console.log(prods);
+            
+            return prods;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async getProductByID(id) {

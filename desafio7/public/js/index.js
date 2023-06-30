@@ -2,7 +2,7 @@
 const socket = io(); //se le llama por convención "io" por el "socket.io";
 
 function render (products) {
-    let html = products.map((elem, index) => {
+    let html = products.map((elem) => {
         return `<hr>
                 <h3 class="nameProduct">Nombre: ${elem.name}</h3>
                 <p>Descripcion: ${elem.description}</p>

@@ -1,7 +1,8 @@
 const socket = io();
 
-function render (products, cid) {
+function render (products, cartId) {
     let html = products.map((elem) => {
+      try {
         return `<div class="col-md-3 card display bg-dark-subtle" style="width: 22rem;">
         <div class="card-body">
         <img src="${elem.img}" class="card-img-top" style="width: 12rem;" alt="...">
@@ -20,9 +21,11 @@ function render (products, cid) {
           <button class="btn-eliminar btn btn-danger" id="${elem._id}">Eliminar producto</button>
         </div>
         <hr>
-        <form action="/api/carts/${cid}/products/${elem._id}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
+        <form action="/api/carts/${cartId}/products/${elem._id}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
       </div>`
-      
+      } catch (error) {
+        console.log(error);
+      } 
     }).join(' ');
     document.getElementById('products').innerHTML = html;
 }

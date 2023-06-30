@@ -24,7 +24,12 @@ cartRoutes.get('/:cid', async (req, res) => {
 
 cartRoutes.post('/',async (req, res) => {
     try {
-        res.status(201).send(await cartService.addCart());
+        const cartId = await cartService.createCart();
+        res.cookie('cartId', cartId,{
+        maxAge: 1000,
+        httpOnly:true
+    })
+        res.redirect('/products')
     } catch (e) {
         res.status(400).send({e: e.message });
     }
@@ -34,30 +39,19 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const productId = req.params.pid;
     const cartId = req.params.cid;
     try {
+        const product = await productService.getProducts() 
         await cartService.addProdToCart(cartId, productId);
-        res.status(201).send(await userService.getUserAndUpdateCart())
+        res.status(201).send(await userService.getUserAndUpdateCart(product));
     } catch (e) {
         res.status(400).send({e});
     }
 })
-    /*
-    const productId = req.params.pid;
-    const cartId = req.params.cid;
-    try {
-        await cartService.addProdToCart(cartId, productId);
-        res.status(201).send(await cartService.getCart())
-    } catch (e) {
-        res.status(400).send({e});
-    }
-})
-*/
 
 cartRoutes.post('/products/:pid', async (req, res) => {
-    const productId = req.params.pid;
-    
     try {
-      const product = await productService.getProduct(productId);
-      const cart = await userService.getUserAndUpdateCart(req, product);
+    const productId = req.params.pid;
+    const product = await productService.getProducts(productId);
+    const cart = await userService.getUserAndUpdateCart(product);
   
       res.status(201).send(cart);
     } catch (error) {

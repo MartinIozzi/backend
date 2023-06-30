@@ -15,9 +15,24 @@ class CartService {
       return cid;
     }
 
+    async createCart(){
+      try {
+        const cartId = new mongoose.Types.ObjectId(); // Generar un nuevo ObjectId
+        const createdCart = await this.model.create({ _id: cartId }); // Asignar el ObjectId al campo _id
+        return createdCart._id.toString(); // Devolver el _id como una cadena de texto
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+
     async addCart(){
-      const createdCart = await this.model.create({});
-      return createdCart;
+      try {
+        const createdCart = await this.model.create({});
+        return createdCart;
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     async getCartById (cid) {
@@ -28,28 +43,27 @@ class CartService {
     }
   }
 
-  async addProdToCart(cartId, productId){
+  async addProdToCart(cartId, productId) {
     try {
-    const cart = await this.model.findById(cartId);
-    if(!cart) {
-      throw new Error('Carrito no encontrado');
-    }
-    const product = await productService.getProductByID(productId);
-    if(!product) {
-      throw new Error('Producto no encontrado');
-    }
-    const existingProduct = cart.products.find(
-      (p) => p.product.toString() === productId
+      const cart = await this.model.findById(cartId);
+      if (!cart) {
+        throw new Error('Carrito no encontrado');
+      }
+      const product = await productService.getProductByID(productId);
+      if (!product) {
+        throw new Error('Producto no encontrado');
+      }
+      const existingProduct = cart.products.find(
+        (p) => p.product.toString() === productId.toString()
       );
       if (existingProduct) {
         existingProduct.quantity += 1; // Incrementar la cantidad si el producto ya existe
       } else {
         cart.products.push({ product: product._id, quantity: 1 }); // Agregar un nuevo producto con cantidad 1
       }
-      
       return await cart.save();
     } catch (err) {
-      console.log(err);
+      throw err;
     }
   }
 

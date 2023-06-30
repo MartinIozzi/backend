@@ -10,7 +10,8 @@ const cartSchema = new mongoose.Schema({
         quantity: {
           type: Number,
           default: 1,
-        }
+        },
+        _id: mongoose.Schema.Types.ObjectId,
       }
     ]
   });
