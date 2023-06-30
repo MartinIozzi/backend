@@ -31,14 +31,16 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
 })
 
 viewsRoutes.get ('/products', async (req, res) => {
+    const cartId = req.session.user.cart
+    console.log(cartId);
+    const products = await productService.getProducts()
     try {
-        const products = await productService.getProducts()
-        const cartId = req.cookies.cartId;
-        res.render('products', {title: 'Productos', products: products, cartId: cartId });
+        res.render('products', {cartId, products, title: 'Productos'});
     } catch (err) {
         res.status(500).send({err})
     }
 })
+
 
 viewsRoutes.get('/carts', async (req, res) => {
     try{

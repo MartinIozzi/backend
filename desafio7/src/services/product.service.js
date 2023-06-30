@@ -21,8 +21,7 @@ class ProductService {
             const options = {lean: true, page, limit, sort};
             console.log(options);
             const prods = await this.model.paginate(query, options);
-            console.log(prods);
-            
+            console.log(prods);            
             return prods;
         } catch (error) {
             console.log(error);
