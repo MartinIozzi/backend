@@ -57,9 +57,10 @@ app.use(
     resave: true,
     saveUninitialized: true,
 }))
+/*
 initializePassport();
 app.use()
-
+*/
 //Rutas de MongoDB
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);

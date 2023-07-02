@@ -29,7 +29,6 @@ class ProductService {
         }
     }
 
-
     async getProductByID(id) {
         return await this.model.findOne({ _id: id });
     }

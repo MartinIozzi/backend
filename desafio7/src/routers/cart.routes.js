@@ -48,17 +48,17 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
 })
 
 cartRoutes.post('/products/:pid', async (req, res) => {
-    try {
     const productId = req.params.pid;
-    const product = await productService.getProducts(productId);
-    const cart = await userService.getUserAndUpdateCart(product);
-  
-      res.status(201).send(cart);
+    try {
+      const product = await productService.getProducts(productId);
+      
+      res.status(201).send(product);
     } catch (error) {
       console.error(error);
       res.status(400).send({ error: 'Error al agregar el producto al carrito' });
     }
   });
+
 
 cartRoutes.delete('/:cid/products/:pid', async (req, res) => {
     try{

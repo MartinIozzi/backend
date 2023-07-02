@@ -30,10 +30,11 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
     }
 })
 
-viewsRoutes.get ('/products/:cid', async (req, res) => {
-    const cid = req.params.cid; 
+viewsRoutes.get ('/products', async (req, res) => {
+    const cartId = req.session.user.cart
+    const products = await productService.getProducts()
     try {
-        res.render('products', {title: 'Productos', cid: cid});
+        res.render('products', {cartId, products, title: 'Productos'});
     } catch (err) {
         res.status(500).send({err})
     }

@@ -32,7 +32,6 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
 
 viewsRoutes.get ('/products', async (req, res) => {
     const cartId = req.session.user.cart
-    console.log(cartId);
     const products = await productService.getProducts()
     try {
         res.render('products', {cartId, products, title: 'Productos'});

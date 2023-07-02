@@ -11,7 +11,7 @@ usersRouter.post('/', async (req, res) => {
 		const newUser = await userService.createUser(userData);
 		const cart = await cartService.addCart();
 		newUser.cart = cart._id;
-		await newUser.save();
+		await user.save();
 		res.status(201).json(newUser);
 	} catch (error) {
 		res.status(400).json({error});
