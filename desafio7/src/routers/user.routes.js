@@ -12,14 +12,13 @@ usersRouter.post('/', async (req, res) => {
 		if (cart && cart._id) {
 			newUser.cart = cart._id;
 			await newUser.save();
-			res.status(201).json(newUser);
 		} else {
 			throw new Error("No se pudo obtener el ID del carrito");
 		}
 		await newUser.save();
 		res.status(201).json(newUser);
 	} catch (error) {
-		res.status(400).json({error});
+		res.send({error});
 	}
 });
 

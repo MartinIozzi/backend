@@ -20,7 +20,7 @@
           <button class="btn-eliminar btn btn-danger" id="{{this._id}}">Eliminar producto</button>
         </div>
         <hr>
-        <form action="/api/carts/{{cartId}}/products/{{this._id}}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
+        <form action="/api/carts/{{@root.cartId}}/products/{{this._id}}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
       </div>
 {{/each}}
   </div>
