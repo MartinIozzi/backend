@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { cartService } from "../services/cart.service.js";
-import userService from "../services/user.service.js";
 import { productService } from "../services/product.service.js";
 
 const cartRoutes = Router();
@@ -41,7 +40,7 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     try {
         const product = await productService.getProducts() 
         await cartService.addProdToCart(cartId, productId);
-        res.status(201).send(await userService.getUserAndUpdateCart(product));
+        res.status(201).send(product);
     } catch (e) {
         res.status(400).send({e});
     }

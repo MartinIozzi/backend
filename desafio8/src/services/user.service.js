@@ -1,5 +1,4 @@
 import userModel from "../../models/user.model.js";
-import cartModel from "../../models/carts.model.js";
 
 class UserService {
     constructor() {
@@ -16,18 +15,6 @@ class UserService {
         const userId = decodedToken.userId;
         const user = await this.model.findById(userId);
         return user;
-    }
-
-    async getUserAndUpdateCart(req, product){
-        const currentUser = await getCurrentUser(req);
-        const userId = currentUser._id;
-        console.log(userId);
-        const user = await this.model.findById(userId);
-        const cartId = user.cart;
-        console.log(cartId);
-
-        const cart = await cartModel.findByIdAndUpdate(cartId, { $push: { products: product } }, { new: true });
-        return cart;
     }
 
     async getByEmail(email){

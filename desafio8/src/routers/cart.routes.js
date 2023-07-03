@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { cartService } from "../services/cart.service.js";
-import userService from "../services/user.service.js";
 import { productService } from "../services/product.service.js";
 
 const cartRoutes = Router();
@@ -24,7 +23,12 @@ cartRoutes.get('/:cid', async (req, res) => {
 
 cartRoutes.post('/',async (req, res) => {
     try {
-        res.status(201).send(await cartService.addCart());
+        const cartId = await cartService.createCart();
+        res.cookie('cartId', cartId,{
+        maxAge: 1000,
+        httpOnly:true
+    })
+        res.redirect('/products')
     } catch (e) {
         res.status(400).send({e: e.message });
     }
@@ -34,7 +38,7 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const productId = req.params.pid;
     const cartId = req.params.cid;
     try {
-        const product = await productService.getProducts();
+        const product = await productService.getProducts() 
         await cartService.addProdToCart(cartId, productId);
         res.status(201).send(product);
     } catch (e) {
@@ -46,13 +50,14 @@ cartRoutes.post('/products/:pid', async (req, res) => {
     const productId = req.params.pid;
     try {
       const product = await productService.getProducts(productId);
-  
+      
       res.status(201).send(product);
     } catch (error) {
       console.error(error);
       res.status(400).send({ error: 'Error al agregar el producto al carrito' });
     }
   });
+
 
 cartRoutes.delete('/:cid/products/:pid', async (req, res) => {
     try{
