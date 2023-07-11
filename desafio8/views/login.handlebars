@@ -9,7 +9,7 @@
 </head>
 <body class="fondo">
     
-    <form action="/api/users/auth" method="post" style="padding: 1.5rem;" class="border border-primary-subtle border-2 rounded-4 contFormLogin">
+    <form action="/api/users/login" method="post" style="padding: 1.5rem;" class="border border-primary-subtle border-2 rounded-4 contFormLogin">
   <div class="form-group">
     <label>Correo electronico</label>
     <input type="email" class="form-control" name="email" placeholder="Ingresar Email">
@@ -19,7 +19,17 @@
     <input type="password" class="form-control" name="password" placeholder="Contraseña">
     <small class="form-text text-muted">Nunca compartas tus datos con alguien mas.</small>
   </div>
-  <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Enviar</button>
+		<button type='submit' class='btn btn-primary col-12' style="margin-top: 1rem;">Ingresar</button>
+  </div>
+  <div>
+    <a href='/api/sessions/github' type='submit' class='btn btn-primary col-12' 
+    style='background: #333; color: #fff; margin-top: 10px'>
+    Ingresar con GitHub</a>
+  </div>
+  <div>
+    <br>
+    <p style="color: blue;">No tienes cuenta? Registrate</p>
+    <a href="/register" class="btn btn-success col-12">Registrarse</a>
   </div>
     </form>
 </body>

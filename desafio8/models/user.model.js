@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
 		index: true,
 	},
 	password: String,
+	age: Number,
 	img: String,
 	cart: {
 		type: mongoose.Schema.Types.ObjectId,

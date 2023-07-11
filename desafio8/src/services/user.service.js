@@ -6,7 +6,7 @@ class UserService {
     }
 
     async getAll(){
-        return await this.model.find();
+        return await this.model.find().lean();
     }
 
     async getCurrentUser(req) {
@@ -21,9 +21,17 @@ class UserService {
         return await this.model.findOne({email: email});
     }
 
+    async getByName(username){
+        return await this.model.findOne({username}).lean();
+    }
+
     async createUser(userData){
         return await this.model.create(userData);
     }
+
+    async getById(id) {
+		return await this.model.findById(id);
+	}
 }
 
 const userService = new UserService();

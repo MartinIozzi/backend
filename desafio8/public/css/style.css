@@ -9,9 +9,7 @@ body{
   color: rgb(255, 255, 255);
 }
 
-.titulo {
-  font-family: monospace;
-} 
+
 
 
 .nameProduct{
@@ -24,9 +22,9 @@ body{
     background: linear-gradient(to right, #c8caca, #8e9eab);
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 45%;
     width: 100vh;
-    height: 450px;    
+    height: 490px;    
     margin-left: -50vh;
     margin-top: -180px;
 }
@@ -37,9 +35,9 @@ body{
   background: linear-gradient(to right, #c8caca, #8e9eab);
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 45%;
   width: 100vh;
-  height: 250px;    
+  height: 420px;    
   margin-left: -50vh;
   margin-top: -150px;
 }

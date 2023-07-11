@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body class="fondo"> 
-    <form action="/api/users/" method="post" style="padding: 1.5rem;" class="border border-primary-subtle border-2 rounded-4 contForm">
+    <form action="/api/users/register" method="post" style="padding: 1.5rem;" class="border border-primary-subtle border-2 rounded-4 contForm">
   <div class="form-group">
     <label>Nombre</label>
     <input type="text" class="form-control" name="first_name" placeholder="Ingresar Nombre">
@@ -20,6 +20,8 @@
   <div class="form-group">
     <label>Contraseña</label>
     <input type="password" class="form-control" name="password" placeholder="Contraseña">
+    <label>Edad</label>
+    <input type="number" class="form-control" name="age" placeholder="Edad">
     <label>Foto de perfil</label>
     <input type="text" class="form-control" name="img" placeholder="Imagen">
     <small class="form-text text-muted">Nunca compartas tus datos con alguien mas.</small>

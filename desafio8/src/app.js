@@ -5,7 +5,8 @@ import mongoose from "mongoose";
 import { Server } from "socket.io";
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
-import MongoStore from 'connect-mongo'
+import MongoStore from 'connect-mongo';
+import passport from "passport";
 
 const app = express();
 
@@ -37,6 +38,7 @@ import { productRoutes } from "./routers/product.routes.js";
 import viewsRoutes from "./routers/views.routes.js";
 import { productService } from "./services/product.service.js";
 import userRouter from "./routers/user.routes.js";
+import passportInit from "./config/passport.config.js";
 
 //Cookies
 app.use(cookieParser('l2YQI4AjpU4Ks'));
@@ -57,10 +59,12 @@ app.use(
     resave: true,
     saveUninitialized: true,
 }))
-/*
-initializePassport();
-app.use()
-*/
+
+//Passport
+passportInit();
+app.use(passport.initialize());
+app.use(passport.session());
+
 //Rutas de MongoDB
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
@@ -68,7 +72,7 @@ app.use('/', viewsRoutes);
 app.use('/api/users', userRouter);
 
 //Connect MongoDB
-mongoose.connect('mongodb+srv://Martin:UfuzAWX8YTmXatWX@ecommerce.buljm7y.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://Martin:UfuzAWX8YTmXatWX@ecommerce.buljm7y.mongodb.net/?retryWrites=true&w=majority');
 
 //-------------------------------------------------------//
 
@@ -102,3 +106,4 @@ socketServer.on ('connection', async (socket) => {
         products(socket)
     })
 });
+
