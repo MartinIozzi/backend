@@ -39,6 +39,7 @@ import viewsRoutes from "./routers/views.routes.js";
 import { productService } from "./services/product.service.js";
 import userRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
+import sessionsRoutes from "./routers/sessions.routes.js";
 
 //Cookies
 app.use(cookieParser('l2YQI4AjpU4Ks'));
@@ -66,9 +67,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Rutas de MongoDB
+app.use('/', viewsRoutes);
+app.use('/api/session', sessionsRoutes)
 app.use('/api/products', productRoutes);
 app.use('/api/carts', cartRoutes);
-app.use('/', viewsRoutes);
 app.use('/api/users', userRouter);
 
 //Connect MongoDB

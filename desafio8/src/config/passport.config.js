@@ -44,6 +44,15 @@ const passportInit = () => {
         }
     }));
 
+	    passport.serializeUser((user, done) => {
+		done(null, user._id);
+	});
+
+	passport.deserializeUser(async (id, done) => {
+		const user = await userService.getById(id);
+		done(null, user);
+	});
+
     passport.use(
 		'github',
 		new GitHubStrategy(
@@ -51,7 +60,7 @@ const passportInit = () => {
 				clientID: 'Iv1.5eb9937ff07ff4ca',
 				clientSecret: 'ac009c8d08998541cce847460493dc70db4672b2',
 				callbackURL:
-					'http://localhost:8080/api/sessions/githubcallback',
+					'http://localhost:8080/api/session/githubcallback',
 			},
 			async (accessToken, refreshToken, profile, done) => {
 				try {
@@ -66,6 +75,7 @@ const passportInit = () => {
 							email: profile._json.email,
 							password: '',
 							img: profile._json.avatar_url,
+							cart: profile._json.cart
 						};
 						user = await userService.createUser(newUser);
 						done(null, user);
@@ -78,15 +88,6 @@ const passportInit = () => {
 			}
 		)
 	);
-
-    passport.serializeUser((user, done) => {
-		done(null, user._id);
-	});
-
-	passport.deserializeUser(async (id, done) => {
-		const user = await userService.getById(id);
-		done(null, user);
-	});
 };
 
 export default passportInit;

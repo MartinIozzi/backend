@@ -12,3 +12,5 @@ sessionsRoutes.get('/githubcallback', passport.authenticate('github', { failureR
 		res.redirect('/');
 	}
 );
+
+export default sessionsRoutes;
