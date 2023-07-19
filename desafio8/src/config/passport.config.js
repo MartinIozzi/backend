@@ -75,7 +75,7 @@ const passportInit = () => {
 							email: profile._json.email,
 							password: '',
 							img: profile._json.avatar_url,
-							cart: profile._json.cart
+							cart: await cartService.addCart()
 						};
 						user = await userService.createUser(newUser);
 						done(null, user);
