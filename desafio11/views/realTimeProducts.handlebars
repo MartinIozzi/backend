@@ -1,0 +1,28 @@
+<div class="container">
+<h2>Lista de productos en tiempo real</h2>
+<div id="formulario">
+    <form action="/api/products" method="post">
+        <input type="text" id="name" name="name" placeholder="Nombre del producto"><br>
+        <input type="text" id="description" name="description" placeholder="Descripción del producto"><br>
+        <input type="number" id="price" name="price" placeholder="Precio del producto"><br>
+        <input type="text" id="code" name="code" placeholder="Código del producto"><br>
+        <input type="number" id="stock" name="stock" placeholder="Stock del producto"><br>
+        <div>
+  <input type="text" id="type" list="opciones" placeholder="Tipo de producto">
+  <datalist id="opciones">
+    <option value="Componentes de PC">
+    <option value="Celulares">
+  </datalist>
+</div>
+        <input type="file" id="img" name="img"/>
+    </form>
+    <button type="submit" id="boton">Enviar</button> <br>
+    </div>
+  <div class="productos" id="products">
+    
+    </div>
+    <br>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
