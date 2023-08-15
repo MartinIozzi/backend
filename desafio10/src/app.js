@@ -34,13 +34,14 @@ app.set('view engine','handlebars');
 
 //Parte MongoDB del proyecto (solo habilitar para switchear entre el JSON y mongoDB si uno de ellos está deshabilitado)
 import { cartRoutes } from "./routers/cart.routes.js";
-import { productRoutes } from "./routers/product.routes.js";
+import productRouter from "./products/products.router.js";
 import viewsRoutes from "./routers/views.routes.js";
-import { productService } from "./controllers/product.service.js";
+import { productService } from "./products/dao/product.service.js";
 import userRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
+
 
 //Cookies
 app.use(cookieParser(config.SECRET_KEY));
@@ -69,7 +70,7 @@ app.use(passport.session());
 //Rutas de MongoDB
 app.use('/', viewsRoutes);
 app.use('/api/session', sessionsRoutes);
-app.use('/api/products', productRoutes);
+app.use('/api/products', productRouter);
 app.use('/api/carts', cartRoutes);
 app.use('/api/users', userRouter);
 

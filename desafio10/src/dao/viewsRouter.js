@@ -1,11 +1,14 @@
 import { Router } from "express";
-import ProductManager from "../services/productManager.js";
+import ProductFactory from "../products/factory.js";
+//importo DAOs
+import ProductManager from "./dao/productManager.js";
+import { productService } from "./dao/product.service.js";
 
 const viewsRouter = Router()
-const productManager = new ProductManager()
+const controller = new ProductFactory(productService)
 
 viewsRouter.get ('/', async (req, res) => {
-    let productsList = await productManager.getProducts()
+    let productsList = await controller.get()
     res.render('index', {products: productsList});
 })
 

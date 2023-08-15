@@ -2,7 +2,7 @@ import fs from 'fs';
 
 class ProductManager {
     constructor() {
-        this.path = ('./models/products.json');
+        this.path = ('./models/json/products.json');
         
         //Creo este código para que si no existe nada en el JSON cree igual lo que vendria siendo el array donde contendría los productos.
         if (!(fs.existsSync(this.path))) {
@@ -27,7 +27,6 @@ class ProductManager {
     async addProduct(product) {
         try {
             let products = await this.getProducts()
-            //Esto verifica que el código específico del producto (ejemplo: "abc123"), no se repita mas de una vez, en tal caso, saltaría el error.
             if(products.find(element => element.code == product.code) != undefined){
                 return console.log('Error al agregar producto: Ya existe el código "' + product.code + '"')
             }
@@ -39,6 +38,7 @@ class ProductManager {
                 id = products[index].id //entonces id vale la id del producto del momento, la cual se verifica con el index y se aplica la id
                 id++    //al verificar eso, para el proximo producto a crear se suma +1 el valor de la ultima id.
             }
+            console.log(product);
             product.id = id.toString();     //el id del producto en el que se estaría trabajando se convierte en string
             products.push(product); 
             this.updateProducts(products);  

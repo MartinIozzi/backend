@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { productService } from "../controllers/product.service.js";
+import { productService } from "../products/dao/product.service.js";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
 
 const viewsRoutes = Router();

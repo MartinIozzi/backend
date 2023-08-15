@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from '../services/productManager.js'
+import ProductManager from "./productManager.js";
 
 let productManager = new ProductManager();
 

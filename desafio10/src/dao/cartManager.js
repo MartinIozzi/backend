@@ -19,7 +19,7 @@ class CartManager {
         }
     }
 
-    async updateCarts () {  //se escribe el carrito en el JSON del carts.json
+    async updateCart () {  //se escribe el carrito en el JSON del carts.json
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products));
         } catch (e) {

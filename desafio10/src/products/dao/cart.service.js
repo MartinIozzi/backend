@@ -1,5 +1,6 @@
-import cartModel from "../../models/carts.model.js";
-import { productService } from "./product.service.js";
+import cartModel from "../../../models/carts.model.js";
+import { productService } from "../../products/dao/product.service.js";
+import mongoose from "mongoose";
 
 class CartService {
     constructor() {

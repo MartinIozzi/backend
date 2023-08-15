@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { productService } from "../controllers/product.service.js";
+import { productService } from "../products/dao/product.service.js";
 
 const productRoutes = Router();
 
@@ -50,4 +50,4 @@ productRoutes.delete('/:pid' , async (req, res) => {
     }
 })
 
-export {productRoutes};
+//export {productRoutes};
