@@ -128,4 +128,20 @@ export class CartFactory {
             console.log(error);
         }
     }
+    //----------------------------//
+    async updateProdQuan(cartId, productId, quantity){
+        try {
+            return await this.dao.updateProductQuantity(cartId, productId, quantity);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async deleteProd(prodId, cartId){
+        try {
+            return await this.dao.deleteProdFromCart(prodId, cartId)
+        } catch (error) {
+            throw error
+        }
+    }
 }

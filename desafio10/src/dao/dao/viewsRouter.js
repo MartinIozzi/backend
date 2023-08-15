@@ -1,8 +1,8 @@
 import { Router } from "express";
-import ProductFactory from "../products/factory.js";
+import ProductFactory from "../../factory/proyect.factory.js";
 //importo DAOs
-import ProductManager from "./dao/productManager.js";
-import { productService } from "./dao/product.service.js";
+import ProductManager from "./productManager.js";
+import { productService } from "./product.service.js";
 
 const viewsRouter = Router()
 const controller = new ProductFactory(productService)

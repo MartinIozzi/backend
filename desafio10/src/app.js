@@ -34,13 +34,14 @@ app.set('view engine','handlebars');
 
 //Parte MongoDB del proyecto (solo habilitar para switchear entre el JSON y mongoDB si uno de ellos está deshabilitado)
 import { cartRoutes } from "./routers/cart.routes.js";
-import productRouter from "./products/products.router.js";
-import viewsRoutes from "./routers/views.routes.js";
-import { productService } from "./products/dao/product.service.js";
+import productRouter from "./dao/dao/products.router.js";
+import viewsRouter from "./dao/dao/viewsRouter.js";
+import { productService } from "./dao/dao/product.service.js";
 import userRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
+//import ProductManager from "./products/dao/productManager.js";
 
 
 //Cookies
@@ -68,7 +69,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Rutas de MongoDB
-app.use('/', viewsRoutes);
+app.use('/', viewsRouter);
 app.use('/api/session', sessionsRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRoutes);
@@ -89,20 +90,24 @@ async function products(socket) {
     socket.emit('send', await productService.getProducts());
 }
 
+//const productManager = new ProductManager()
+
 socketServer.on ('connection', async (socket) => {
     console.log("Nuevo cliente conectado");
     products(socket)
 
     socket.on ('add', async (product) => {
         //await productManager.addProduct(product)
-        //socket.emit('send', await productManager.getProducts())   **SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
+        //socket.emit('send', await productManager.getProducts())
+        //**SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
         await productService.addProduct(product)
         socket.emit('send', await productService.getProducts())
         products(socket)
     })
 
     socket.on('delete', async (id) => {
-        //await productManager.deleteProduct(id);   **SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
+        //await productManager.deleteProduct(id);
+        //**SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
         await productService.deleteProduct(id);
         products(socket)
     })

@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { CartFactory } from "../dao/factory/factory.js";
+import { CartFactory } from "../factory/proyect.factory.js";
 //importo DAOs
-import { productService } from "../products/dao/product.service.js";
-
-import { cartService } from "../products/dao/cart.service.js";
-import CartManager from "../dao/cartManager.js";
+import { productService } from "../dao/dao/product.service.js";
+import ProductManager from "../dao/dao/productManager.js";
+import { info } from "../factory/factory.js";
 
 const cartRoutes = Router();
-const controller = new CartFactory(cartService)
+const controller = new CartFactory(info)
 
 cartRoutes.get('/', async (req, res) => {
     try {
@@ -67,10 +66,11 @@ cartRoutes.delete('/:cid/products/:pid', async (req, res) => {
     try{
         const prodId = req.params.pid;
         const cartId = req.params.cid;
-        await controller.deleteProdFromCart(prodId, cartId);
+        await controller.deleteProd(prodId, cartId);
         res.status(201).send("Producto eliminado del carrito");
     } catch (err) {
-        res.status(400).send({err});
+        console.error(err);
+        res.status(400).send("No se pudo eliminar el producto del carrito");
     }
 })
 
@@ -89,7 +89,7 @@ cartRoutes.put('/:cid', async (req, res) => {
         const cartId = req.params.cid;
         const products = req.body;
 
-        res.status(200).send(await controller.updateCart(cartId, products));
+        res.status(200).send(await controller.update(cartId, products));
     } catch (err) {
         res.status(400).send({ err });
     }
@@ -102,7 +102,7 @@ cartRoutes.put('/:cid/products/:pid', async (req, res) => {
     const quantity = req.body.quantity;
     try {
 
-      await controller.updateProductQuantity(cartId, productId, quantity);
+      await controller.updateProdQuan(cartId, productId, quantity);
       res.status(200).send("Se ejecutó exitosamente");
     } catch (error) {
       res.status(400).send({ error: error.message });
