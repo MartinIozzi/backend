@@ -1,4 +1,5 @@
 import userModel from "../../../models/user.model.js";
+import config from '../../config/config.js'
 
 class UserService {
     constructor() {
@@ -11,7 +12,7 @@ class UserService {
 
     async getCurrentUser(req) {
         const token = req.headers.authorization;   
-        const decodedToken = jwt.verify(token, 'l2YQI4AjpU4Ks'); // clave secreta para firmar los tokens
+        const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
         const userId = decodedToken.userId;
         const user = await this.model.findById(userId);
         return user;

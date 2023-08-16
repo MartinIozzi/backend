@@ -2,7 +2,7 @@ import fs from 'fs';
 
 class CartManager {
     constructor() {
-        this.path = "./models/carts.json"
+        this.path = "./models/json/carts.json"
         this.id = 0;
         this.products = [] 
 
@@ -36,7 +36,7 @@ class CartManager {
         }
     };
 
-    async addCart(){    //agrega carritos en el JSON
+    async createCart(){    //agrega carritos en el JSON
         try {
             let cartArray = this.products   //creo una variable que contenga el this.products
             this.id++;  //id que se autoincrementa
@@ -45,7 +45,7 @@ class CartManager {
                 id: this.id
             }
             cartArray.push(carrito);    //se pushea dentro del this.products el carrito
-            this.updateCarts(); //se escribe en el JSON los datos actualizados
+            this.updateCart(); //se escribe en el JSON los datos actualizados
             return cartArray;   //se retorna el array de carritos
         }
         catch(e) {
@@ -64,7 +64,7 @@ class CartManager {
             }
             product.quantity = 1;   //para que cuando se crea el producto, se identifique que el valor sea 1
             this.products.push(carrito);    //se pushea el array de this.products al carrito, para que lo muestre como un objeto dentro del array
-            this.updateCarts(); //se escriben los datos en el this.path
+            this.updateCart(); //se escriben los datos en el this.path
             return;
         }
         //cuando el producto se crea:
@@ -74,13 +74,13 @@ class CartManager {
         if(indexProducto == -1){    //si indexProduct es igual a -1
             product.quantity = 1;   //se crea un quantity de 1
             this.products[index].cart.push(product) //se busca por index, en el array, el carrito seleccionado desde el params, y pushea el producto que antes fue definido, como la id, en la variable indexProducto
-            return this.updateCarts();  //se retorna para que escriba los datos en el json
+            return this.updateCart();  //se retorna para que escriba los datos en el json
         }
         //quantity
         let cantidad = carritoUsuario[indexProducto].quantity + 1   //toma el array del cart que se seleccione y el id de los productos seleccionados y le suma la cantidad de 1
         this.products[index].cart[indexProducto].quantity = cantidad    /* toma el array de this.products y el array seleccionado por la variable index; luego toma cart, 
         selecciona la id del producto y eso lo iguala a la cantidad que se le sumó en la variable anterior */
-        this.updateCarts(); //escribe los productos dentro del json.
+        this.updateCart(); //escribe los productos dentro del json.
         } catch (e) {
             console.log(e);
         }

@@ -1,12 +1,11 @@
 import { Router } from "express";
-import { CartFactory } from "../factory/proyect.factory.js";
-//importo DAOs
-import { productService } from "../dao/dao/product.service.js";
-import ProductManager from "../dao/dao/productManager.js";
-import { info } from "../factory/factory.js";
+import { CartFactory } from "../factory/project.factory.js";
+//Importo DAOs
+import { cartService } from "../dao/dao/cart.service.js";   //DB MONGO
+import CartManager from "../dao/dao/cartManager.js";    //FILE SYSTEM
 
 const cartRoutes = Router();
-const controller = new CartFactory(info)
+const controller = new CartFactory(cartService)
 
 cartRoutes.get('/', async (req, res) => {
     try {
@@ -32,7 +31,7 @@ cartRoutes.post('/',async (req, res) => {
         maxAge: 1000,
         httpOnly:true
     })
-        res.redirect('/products')
+        res.redirect('/')
     } catch (e) {
         res.status(400).send({e: e.message });
     }

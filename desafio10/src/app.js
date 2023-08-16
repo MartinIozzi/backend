@@ -37,7 +37,7 @@ import { cartRoutes } from "./routers/cart.routes.js";
 import productRouter from "./dao/dao/products.router.js";
 import viewsRouter from "./dao/dao/viewsRouter.js";
 import { productService } from "./dao/dao/product.service.js";
-import userRouter from "./routers/user.routes.js";
+import usersRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
@@ -73,7 +73,7 @@ app.use('/', viewsRouter);
 app.use('/api/session', sessionsRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRoutes);
-app.use('/api/users', userRouter);
+app.use('/api/users', usersRouter);
 
 //Connect MongoDB
 mongoose.connect(config.MONGO_URL);

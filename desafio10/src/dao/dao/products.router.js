@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductFactory from "../../factory/proyect.factory.js";
+import ProductFactory from "../../factory/project.factory.js";
 //importo DAOs
 import ProductManager from "./productManager.js";
 import { productService } from "./product.service.js";
@@ -22,6 +22,7 @@ productRouter.get('/', async (req, res) => {
 
 productRouter.post('/', async (req, res) => {
     try {
+        console.log(req.body);
         const product = await controller.add(req.body);
         res.status(201).json(product);
     } catch (error) {

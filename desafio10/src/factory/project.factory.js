@@ -1,3 +1,5 @@
+import { ProductDTO } from "../dao/dto/dto.js";
+
 export default class ProductFactory {
     constructor (dao) {
         this.dao = dao;
@@ -13,7 +15,8 @@ export default class ProductFactory {
 
     async add(product){
         try {
-            return await this.dao.addProduct(product);
+            const newProduct = new ProductDTO(product)
+            return await this.dao.addProduct(newProduct);
         } catch (error) {
             console.log(error);
         }
@@ -93,7 +96,7 @@ export class CartFactory {
         try {
             return await this.dao.getCartById(cartId)
         } catch (error) {
-            
+            console.log(error);
         }
     }
 
