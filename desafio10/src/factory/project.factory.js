@@ -13,6 +13,14 @@ export default class ProductFactory {
         } 
     }
 
+    async getByID(pid){
+        try {
+            return await this.dao.getProductByID(pid);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async add(product){
         try {
             const newProduct = new ProductDTO(product)
@@ -36,7 +44,14 @@ export default class ProductFactory {
         } catch (error) {
             console.log(error);
         }
-        
+    }
+
+    async find(limit, sort, query, page){
+        try {
+            return await this.dao.findWithPagination(limit, sort, query, page);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

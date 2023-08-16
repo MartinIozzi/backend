@@ -1,11 +1,12 @@
 import { Router } from "express";
 import { CartFactory } from "../factory/project.factory.js";
 //Importo DAOs
-import { cartService } from "../dao/dao/cart.service.js";   //DB MONGO
-import CartManager from "../dao/dao/cartManager.js";    //FILE SYSTEM
+import { productService } from "../controllers/product.service.js";
+import { cartService } from "../controllers/cart.service.js";   //DB MONGO
+import CartManager from "../controllers/fs/cartManager.js";    //FILE SYSTEM
 
 const cartRoutes = Router();
-const controller = new CartFactory(cartService)
+const controller = new CartFactory(new CartManager())
 
 cartRoutes.get('/', async (req, res) => {
     try {

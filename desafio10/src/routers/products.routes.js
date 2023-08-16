@@ -1,8 +1,8 @@
 import { Router } from "express";
-import ProductFactory from "../../factory/project.factory.js";
+import ProductFactory from "../factory/project.factory.js";
 //importo DAOs
-import ProductManager from "./productManager.js";
-import { productService } from "./product.service.js";
+import ProductManager from "../controllers/fs/productManager.js";
+import { productService } from "../controllers/product.service.js";
 
 /*
 Para cambiar de persistencia, en la de ProductManager hay que poner new ProductManager(), 
@@ -17,7 +17,16 @@ productRouter.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({message: error.message});
     }
+});
 
+productRouter.get("/:pid" , async (req, res)=> {
+    const pid = req.params.pid;
+    try {
+        let products = await controller.getByID(pid)
+        res.send(products);
+    } catch (e){
+		res.status(400).send({e});
+    }
 });
 
 productRouter.post('/', async (req, res) => {

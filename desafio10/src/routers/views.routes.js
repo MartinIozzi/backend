@@ -1,8 +1,13 @@
 import { Router } from "express";
-import { productService } from "../products/dao/product.service.js";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
+import ProductFactory from "../factory/project.factory.js";
+//Importo DAOs
+import { productService } from "../controllers/product.service.js";
+import ProductManager from "../controllers/fs/productManager.js";
+
 
 const viewsRoutes = Router();
+const controller = new ProductFactory(productService)
 
 viewsRoutes.get ('/', isAuth, async (req, res) => {
     const { user } = req.session;
@@ -14,11 +19,11 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
     try {
-        const prods = await productService.findWithPagination(limit, sort, query, page)
-        const productList = await productService.getProducts();
+        const prods = await controller.find(limit, sort, query, page);
+        const productList = await controller.get();
         res.render('index', {products: productList, user, prods, title: 'Lista de productos'})
       } catch (err) {
-        res.status(500).send({err});
+        res.status(500).send("no funciona el render", err);
     }
 });
 
@@ -32,7 +37,7 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
 
 viewsRoutes.get ('/products', async (req, res) => {
     const cartId = req.session.user.cart
-    const products = await productService.getProducts()
+    const products = await controller.get()
     try {
         res.render('products', {cartId, products, title: 'Productos'});
     } catch (err) {

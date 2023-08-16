@@ -1,14 +1,34 @@
 import { Router } from 'express';
 import passport from 'passport';
+import userService from '../controllers/user.service.js';
 
 const usersRouter = Router();
 
-usersRouter.post('/register', passport.authenticate('register', {failureRedirect: "/failregister"}) , async (req, res) => {
+usersRouter.get('/', async (req, res) => {
+	try {
+		let users = await userService.getAll()
+		res.send(users)
+	} catch (error) {
+		throw new Error
+	}
+})
+
+usersRouter.post('/', async (req, res) => {
+	try {
+		const userData = req.body;
+		let users = await userService.createUser(userData)
+		res.send(users)
+	} catch (error) {
+		throw new Error
+	}
+})
+
+usersRouter.post('/register', passport.authenticate('register') , async (req, res) => {
 	res.redirect('/')
 });
 
 usersRouter.post('/login', passport.authenticate('login'), async (req, res) => {
-	req.session.user = req.user
+	req.session.user = req.user;
 	res.redirect('/')
 });
 

@@ -1,5 +1,5 @@
-import userModel from "../../../models/user.model.js";
-import config from '../../config/config.js'
+import userModel from "../../models/user.model.js";
+import config from '../config/config.js';
 
 class UserService {
     constructor() {
@@ -14,6 +14,7 @@ class UserService {
         const token = req.headers.authorization;   
         const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
         const userId = decodedToken.userId;
+        console.log(userId);
         const user = await this.model.findById(userId);
         return user;
     }
