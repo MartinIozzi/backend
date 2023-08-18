@@ -37,10 +37,12 @@ function enviarProducto () {
         code: document.getElementById("code").value,
         stock: document.getElementById("stock").value,
         type: document.getElementById("type").value,
-        img: document.getElementById("img").value,
+        img: document.getElementById("img"),
     }
     socket.emit('add', products);
 }
 
 let botonEnviar = document.getElementById("boton")
-botonEnviar.addEventListener('click', (enviarProducto)) //si pongo parentesis se ejecuta solo
+botonEnviar.addEventListener('click', enviarProducto)
+
+ //si pongo parentesis se ejecuta solo

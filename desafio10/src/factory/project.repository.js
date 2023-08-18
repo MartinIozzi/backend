@@ -1,6 +1,6 @@
 import { ProductDTO } from "../dao/dto/dto.js";
 
-export default class ProductFactory {
+export default class ProductRepository {
     constructor (dao) {
         this.dao = dao;
     }
@@ -13,7 +13,7 @@ export default class ProductFactory {
         } 
     }
 
-    async getByID(pid){
+    async getById(pid){
         try {
             return await this.dao.getProductByID(pid);
         } catch (error) {
@@ -55,46 +55,45 @@ export default class ProductFactory {
     }
 }
 
-export class UserFactory {
+export class UserRepository {
     constructor (dao) {
         this.dao = dao;
     }
     
     async get(){
         try {
-            return await this.dao.getUsers();
+            return await this.dao.getAll();
         } catch (error) {
             console.log(error);
         } 
     }
+
+    async getById(id){
+        try {
+            return await this.dao.getById(id);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async getByCartId(cartId){
+        try {
+            return await this.dao.getByCartId(cartId)
+        } catch (error) {
+            console.log(error);
+        }
+    }
     
-    async add(user){
+    async create(user){
         try {
-            return await this.dao.addProduct(product);
+            return await this.dao.createUser(user);
         } catch (error) {
             console.log(error);
         }
-    }
-
-    async update(id, product){
-        try {
-            return await this.dao.updateProduct(id, product);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async delete(id){
-        try {
-            return await this.dao.deleteProduct(id);
-        } catch (error) {
-            console.log(error);
-        }
-        
     }
 }
 
-export class CartFactory {
+export class CartRepository {
     constructor (dao) {
         this.dao = dao;
     }
@@ -158,6 +157,14 @@ export class CartFactory {
     async deleteProd(prodId, cartId){
         try {
             return await this.dao.deleteProdFromCart(prodId, cartId)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async deletePurchasedProducts(cartId, incompletedProducts) {
+        try {
+            return await this.dao.deletePurchasedProducts(cartId, incompletedProducts);
         } catch (error) {
             throw error
         }

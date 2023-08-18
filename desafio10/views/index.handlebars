@@ -4,7 +4,7 @@
     {{#each products}}
     <div class="col-md-3 card bg-dark-subtle display bg-dark-subtle" style="width: 22rem;">
         <div class="card-body" >
-        <img src="{{this.img}}" class="card-img-top" style="width: 12rem;" alt="...">
+        <img src="{{this.img}}" class="card-img-top" style="width: 12rem;" alt="{{this.name}}">
           <h4 class="card-title">{{this.name}}</h4>
           <hr></hr>
           <p class="card-text">{{this.description}}</p>
@@ -17,9 +17,8 @@
           <hr></hr>
           <p class="card-text">{{this.type}}</p>
         </div>
-        <button type="submit"></button>
+        <button type="submit" style="width: 10rem; height: 2rem;" class="m-2 bg-info rounded">Agregar al carrito</button>
     </div>
     {{/each}}
 </div>
 <br>
-

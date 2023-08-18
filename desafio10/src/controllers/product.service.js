@@ -1,4 +1,4 @@
-import {productModel} from '../../models/products.model.js'
+import { productModel } from '../../models/products.model.js';
 import mongoose from 'mongoose';
 
 class ProductService {
@@ -11,7 +11,6 @@ class ProductService {
         } catch (error) {
             console.log(error);
         }
-        
     };
 
     async addProduct(product) {
@@ -41,7 +40,7 @@ class ProductService {
 
     async updateProduct(id, data) {
         try {
-            const objectId = mongoose.Types.ObjectId(id);
+            const objectId = new mongoose.Types.ObjectId(id);
             let product = await this.model.findById(objectId);
         
             if(!product){

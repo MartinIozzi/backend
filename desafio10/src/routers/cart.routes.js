@@ -1,12 +1,20 @@
 import { Router } from "express";
-import { CartFactory } from "../factory/project.factory.js";
+import ProductRepository, {UserRepository, CartRepository} from "../factory/project.repository.js";
+import ticketModel from "../../models/ticket.model.js";
 //Importo DAOs
 import { productService } from "../controllers/product.service.js";
+import ProductManager from "../controllers/fs/productManager.js";
 import { cartService } from "../controllers/cart.service.js";   //DB MONGO
 import CartManager from "../controllers/fs/cartManager.js";    //FILE SYSTEM
+import TicketService from "../controllers/ticket.service.js";
+import userService from "../controllers/user.service.js";
 
 const cartRoutes = Router();
-const controller = new CartFactory(new CartManager())
+
+const ticketService = new TicketService()
+const userController = new UserRepository(userService)
+const productController = new ProductRepository(productService)
+const controller = new CartRepository(cartService)
 
 cartRoutes.get('/', async (req, res) => {
     try {
@@ -42,7 +50,7 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const productId = req.params.pid;
     const cartId = req.params.cid;
     try {
-        const product = await productService.getProducts() 
+        const product = await productController.get()
         await controller.add(cartId, productId);
         res.status(201).send(product);
     } catch (e) {
@@ -50,10 +58,52 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     }
 })
 
+cartRoutes.get('/:cid/purchase', async (req, res) => {
+    const cartId = req.params.cid;
+    try {
+        res.status(201).send(await ticketService.getTickets())
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+cartRoutes.post('/:cid/purchase', async (req, res) => {
+    try {
+        const cartId = req.params.cid;
+        const cart = await controller.getById(cartId);
+        const user = await userController.getByCartId(cartId);
+        const purchaser = user.email;
+        let amount = 0;
+
+        let incompletedProducts = []
+
+        for (const product of cart.products){
+            const products = await productController.getById(product.product)
+            if(products.stock >= product.quantity) {
+                products.stock -= product.quantity;
+                await productController.update(products._id, products)
+                amount += products.price * product.quantity;
+            } else {
+                incompletedProducts.push(products._id.toString());
+            }
+        }
+        await ticketService.createTicket(purchaser, amount);
+
+        const cartProducts = cart.products.filter(x => 
+            incompletedProducts.includes(x.product.toString()));
+        
+        await controller.update(cartId, cartProducts);
+        
+        res.send('Se ejecutó correctamente');
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 cartRoutes.post('/products/:pid', async (req, res) => {
     const productId = req.params.pid;
     try {
-      const product = await productService.getProducts(productId);
+      const product = await productController.getProducts(productId);
       res.status(201).send(product);
     } catch (error) {
       console.error(error);

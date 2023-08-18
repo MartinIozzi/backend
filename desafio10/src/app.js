@@ -89,8 +89,6 @@ async function products(socket) {
     socket.emit('send', await productService.getProducts());
 }
 
-//const productManager = new ProductManager()
-
 socketServer.on ('connection', async (socket) => {
     console.log("Nuevo cliente conectado");
     products(socket)

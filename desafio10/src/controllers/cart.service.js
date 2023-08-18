@@ -50,7 +50,8 @@ class CartService {
       if (!cart) {
         throw new Error('Carrito no encontrado');
       }
-      const product = await productService.getProductByID(productId);
+      const product = await productService.getProductByID(productId)
+      console.log(product);
       if (!product) {
         throw new Error('Producto no encontrado');
       }
@@ -58,9 +59,9 @@ class CartService {
         (p) => p.product.toString() === productId.toString()
       );
       if (existingProduct) {
-        existingProduct.quantity += 1; // Incrementar la cantidad si el producto ya existe
+        existingProduct.quantity += 1;
       } else {
-        cart.products.push({ product: product._id, quantity: 1 }); // Agregar un nuevo producto con cantidad 1
+        cart.products.push({ product: product._id, quantity: 1 });
       }
       return await cart.save();
     } catch (err) {
@@ -100,6 +101,7 @@ class CartService {
     console.log(err);
   }
 }
+
 
 async updateCart(cartId, products) {
 try {

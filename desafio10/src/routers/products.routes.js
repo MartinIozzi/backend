@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductFactory from "../factory/project.factory.js";
+import ProductRepository from "../factory/project.repository.js";
 //importo DAOs
 import ProductManager from "../controllers/fs/productManager.js";
 import { productService } from "../controllers/product.service.js";
@@ -7,7 +7,7 @@ import { productService } from "../controllers/product.service.js";
 /*
 Para cambiar de persistencia, en la de ProductManager hay que poner new ProductManager(), 
 en la de productService no, porque no lo exporté como default    */
-const controller = new ProductFactory(productService);
+const controller = new ProductRepository(productService);
 const productRouter = Router();
 
 productRouter.get('/', async (req, res) => {
@@ -22,7 +22,7 @@ productRouter.get('/', async (req, res) => {
 productRouter.get("/:pid" , async (req, res)=> {
     const pid = req.params.pid;
     try {
-        let products = await controller.getByID(pid)
+        let products = await controller.getById(pid)
         res.send(products);
     } catch (e){
 		res.status(400).send({e});
@@ -31,7 +31,6 @@ productRouter.get("/:pid" , async (req, res)=> {
 
 productRouter.post('/', async (req, res) => {
     try {
-        console.log(req.body);
         const product = await controller.add(req.body);
         res.status(201).json(product);
     } catch (error) {

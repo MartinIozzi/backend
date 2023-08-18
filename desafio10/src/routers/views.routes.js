@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
-import ProductFactory from "../factory/project.factory.js";
+import ProductRepository from "../factory/project.repository.js";
 //Importo DAOs
 import { productService } from "../controllers/product.service.js";
 import ProductManager from "../controllers/fs/productManager.js";
 
 
 const viewsRoutes = Router();
-const controller = new ProductFactory(productService)
+const controller = new ProductRepository(productService)
 
 viewsRoutes.get ('/', isAuth, async (req, res) => {
     const { user } = req.session;

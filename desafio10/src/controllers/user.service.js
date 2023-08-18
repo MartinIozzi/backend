@@ -1,9 +1,11 @@
 import userModel from "../../models/user.model.js";
+import cartModel from "../../models/carts.model.js";
 import config from '../config/config.js';
 
 class UserService {
     constructor() {
         this.model = userModel;
+        this.cartModel = cartModel;
     }
 
     async getAll(){
@@ -14,7 +16,6 @@ class UserService {
         const token = req.headers.authorization;   
         const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
         const userId = decodedToken.userId;
-        console.log(userId);
         const user = await this.model.findById(userId);
         return user;
     }
@@ -34,6 +35,10 @@ class UserService {
     async getById(id) {
 		return await this.model.findById(id);
 	}
+    
+    async getByCartId(cartId){
+        return await this.model.findOne({cart: cartId}).lean();
+    }
 }
 
 const userService = new UserService();
