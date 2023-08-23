@@ -1,0 +1,26 @@
+<div class="container-chat">
+    <form action='/' method='post'>
+        {{#if user}}
+        <div class="mb-3">
+            <h2>Comunidad</h2>
+
+            <input type='text' class='form-control' placeholder='Email' aria-label='user' name='user' value='{{this.email}}'/>
+            <br>
+            <div id="emailHelp" class="form-text">Chatea con todos los usuarios!</div>
+            <input type='text' class='form-control' placeholder='Ingresa un mensaje' aria-label='message' name='message'/>
+            <br>
+            <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+        </div>
+        {{/if}}
+
+    </form>
+
+    <div class='container-mensaje'>
+        <h2 class="Lista">Chat</h2>
+        <div id="List-Message"></div>
+    </div>
+</div>
+
+
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/chat.js'></script>

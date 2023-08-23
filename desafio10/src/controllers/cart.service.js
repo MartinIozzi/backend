@@ -78,9 +78,7 @@ class CartService {
     cart.products = cart.products.filter(
       (product) => product.product.toString() !== prodId
       );
-      console.log(prodId);
       await cart.save();
-      console.log(cart);
       return cart;
     } catch (err) {
       console.log(err);

@@ -1,9 +1,8 @@
 import { Router } from "express";
 import ProductRepository, {UserRepository, CartRepository} from "../factory/project.repository.js";
-import ticketModel from "../../models/ticket.model.js";
 //Importo DAOs
-import { productService } from "../controllers/product.service.js";
-import ProductManager from "../controllers/fs/productManager.js";
+import { productService } from "../controllers/product.service.js";   //DB MONGO  
+import ProductManager from "../controllers/fs/productManager.js";    //FILE SYSTEM
 import { cartService } from "../controllers/cart.service.js";   //DB MONGO
 import CartManager from "../controllers/fs/cartManager.js";    //FILE SYSTEM
 import TicketService from "../controllers/ticket.service.js";
@@ -22,7 +21,7 @@ cartRoutes.get('/', async (req, res) => {
     } catch (err) {
         res.status(500).send({err})
     }
-})
+});
 
 cartRoutes.get('/:cid', async (req, res) => {
     const cartId = req.params.cid;
@@ -31,7 +30,7 @@ cartRoutes.get('/:cid', async (req, res) => {
     } catch (e) {
         res.status(400).send('Error al obtener el carrito', {e});
     }
-})
+});
 
 cartRoutes.post('/',async (req, res) => {
     try {
@@ -56,16 +55,15 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     } catch (e) {
         res.status(400).send({e});
     }
-})
+});
 
 cartRoutes.get('/:cid/purchase', async (req, res) => {
-    const cartId = req.params.cid;
     try {
         res.status(201).send(await ticketService.getTickets())
     } catch (error) {
         console.log(error);
     }
-})
+});
 
 cartRoutes.post('/:cid/purchase', async (req, res) => {
     try {
@@ -109,7 +107,7 @@ cartRoutes.post('/products/:pid', async (req, res) => {
       console.error(error);
       res.status(400).send({ error: 'Error al agregar el producto al carrito' });
     }
-  });
+});
 
 
 cartRoutes.delete('/:cid/products/:pid', async (req, res) => {
@@ -122,7 +120,7 @@ cartRoutes.delete('/:cid/products/:pid', async (req, res) => {
         console.error(err);
         res.status(400).send("No se pudo eliminar el producto del carrito");
     }
-})
+});
 
 cartRoutes.delete('/:cid', async (req, res) => {
     try {
@@ -132,7 +130,7 @@ cartRoutes.delete('/:cid', async (req, res) => {
     } catch (err) {
         res.status(400).send({err});
     }
-})
+});
 
 cartRoutes.put('/:cid', async (req, res) => {
     try {
@@ -140,11 +138,10 @@ cartRoutes.put('/:cid', async (req, res) => {
         const products = req.body;
 
         res.status(200).send(await controller.update(cartId, products));
-    } catch (err) {
-        res.status(400).send({ err });
+    } catch (error) {
+        res.status(400).send({error: error.message});
     }
-  }
-);
+});
 
 cartRoutes.put('/:cid/products/:pid', async (req, res) => {
     const cartId = req.params.cid;
@@ -155,8 +152,8 @@ cartRoutes.put('/:cid/products/:pid', async (req, res) => {
       await controller.updateProdQuan(cartId, productId, quantity);
       res.status(200).send("Se ejecutó exitosamente");
     } catch (error) {
-      res.status(400).send({ error: error.message });
+      res.status(400).send({error: error.message});
     }
-  });
+});
 
 export {cartRoutes};

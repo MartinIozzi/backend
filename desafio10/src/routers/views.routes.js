@@ -69,4 +69,13 @@ viewsRoutes.get('/register', isGuest, (req, res) => {
     }
 })
 
+viewsRoutes.get('/chat', isAuth, (req, res) => {
+    try {
+        res.render('chat', { user: req.user });
+    } catch (error) {
+        res.status(500).send({err})
+    }
+});
+  
+
 export default viewsRoutes;

@@ -25,13 +25,13 @@ export default class TicketService{
         try {
             return await this.model.find().lean()
         } catch (error) {
-            console.log("Error al traer los ticket", error);
+            console.log("Error al traer los tickets", error);
         }
     }
 
     async getTicketById(id){
         try {
-            return await this.model.findOne({ _id: id })
+            return await this.model.findOne({ _id: id }).lean()
         } catch (error) {
             console.log("Error al traer el ticket por id", error);
         }

@@ -4,6 +4,7 @@ import userService from '../controllers/user.service.js';
 import GitHubStrategy from 'passport-github2'
 import { comparePassword, hashPassword } from '../utils/encript.js';
 import { cartService } from '../controllers/cart.service.js';
+import config from './config.js';
 
 const LocalStrategy = local.Strategy;
 const passportInit = () => {
@@ -57,10 +58,9 @@ const passportInit = () => {
 		'github',
 		new GitHubStrategy(
 			{
-				clientID: 'Iv1.5eb9937ff07ff4ca',
-				clientSecret: 'ac009c8d08998541cce847460493dc70db4672b2',
-				callbackURL:
-					'http://localhost:8080/api/session/githubcallback',
+				clientID: config.clientID,
+				clientSecret: config.clientSecret,
+				callbackURL: config.callbackURL,
 			},
 			async (accessToken, refreshToken, profile, done) => {
 				try {

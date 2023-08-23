@@ -44,5 +44,3 @@ function enviarProducto () {
 
 let botonEnviar = document.getElementById("boton")
 botonEnviar.addEventListener('click', enviarProducto)
-
- //si pongo parentesis se ejecuta solo

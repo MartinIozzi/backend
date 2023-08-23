@@ -1,6 +1,5 @@
 import express from "express";
 import handlebars from "express-handlebars";
-//import { server } from "./utils/socket.js";
 import mongoose from "mongoose";
 import { Server } from "socket.io";
 import session from 'express-session';
@@ -16,23 +15,9 @@ app.use(express.urlencoded({extended: true}));
 app.engine('handlebars', handlebars.engine());
 app.set('views' , 'views/' );
 app.set('view engine','handlebars');
-//-------------------------------------------------------//
-
-//Parte JSON del proyecto (solo habilitar para switchear entre el JSON y mongoDB si uno de ellos está deshabilitado)
-//import viewsRouter from "./routers/viewsRouter.js";
-//import { cartRouter } from "./routers/cartRouter.js";
-//import { productRouter } from "./routers/productRouter.js";
-
-//const productManager = new ProductManager();
-
-//Rutas de fs, json del proyecto
-//app.use('/', viewsRouter);
-//app.use('/api/products', productRouter);
-//app.use('/api/carts', cartRouter);
 
 //-------------------------------------------------------//
 
-//Parte MongoDB del proyecto (solo habilitar para switchear entre el JSON y mongoDB si uno de ellos está deshabilitado)
 import { cartRoutes } from "./routers/cart.routes.js";
 import productRouter from "./routers/products.routes.js";
 import { productService } from "./controllers/product.service.js";
@@ -94,19 +79,13 @@ socketServer.on ('connection', async (socket) => {
     products(socket)
 
     socket.on ('add', async (product) => {
-        //await productManager.addProduct(product)
-        //socket.emit('send', await productManager.getProducts())
-        //**SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
         await productService.addProduct(product)
-        socket.emit('send', await productService.getProducts())
+        socket.emit('send', await productService.getProducts());
         products(socket)
     })
 
     socket.on('delete', async (id) => {
-        //await productManager.deleteProduct(id);
-        //**SE COMENTA, PARA ASI PODER SWITCHEAR ENTRE FS Y MONGODB, en el caso, switchear los comentarios.
         await productService.deleteProduct(id);
         products(socket)
     })
 });
-
