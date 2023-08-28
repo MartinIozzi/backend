@@ -11,6 +11,7 @@ const controller = new ProductRepository(productService)
 
 viewsRoutes.get ('/', isAuth, async (req, res) => {
     const { user } = req.session;
+    const cartId = user.cart;
     delete user.password;
     
     const limit = parseInt(req.query.limit) || 10;
@@ -21,7 +22,7 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
     try {
         const prods = await controller.find(limit, sort, query, page);
         const productList = await controller.get();
-        res.render('index', {products: productList, user, prods, title: 'Lista de productos'})
+        res.render('index', {products: productList, user, prods, cartId, title: 'Lista de productos'})
       } catch (err) {
         res.status(500).send("no funciona el render", err);
     }

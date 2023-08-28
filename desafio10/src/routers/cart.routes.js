@@ -49,9 +49,8 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const productId = req.params.pid;
     const cartId = req.params.cid;
     try {
-        const product = await productController.get()
-        await controller.add(cartId, productId);
-        res.status(201).send(product);
+        const addedProduct = await controller.add(cartId, productId);
+        res.status(201).send(addedProduct);
     } catch (e) {
         res.status(400).send({e});
     }
@@ -101,7 +100,7 @@ cartRoutes.post('/:cid/purchase', async (req, res) => {
 cartRoutes.post('/products/:pid', async (req, res) => {
     const productId = req.params.pid;
     try {
-      const product = await productController.getProducts(productId);
+      const product = await productController.get(productId);
       res.status(201).send(product);
     } catch (error) {
       console.error(error);

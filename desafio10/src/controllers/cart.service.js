@@ -51,7 +51,6 @@ class CartService {
         throw new Error('Carrito no encontrado');
       }
       const product = await productService.getProductByID(productId)
-      console.log(product);
       if (!product) {
         throw new Error('Producto no encontrado');
       }

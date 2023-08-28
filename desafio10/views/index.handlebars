@@ -17,7 +17,7 @@
           <hr></hr>
           <p class="card-text">{{this.type}}</p>
         </div>
-        <button type="submit" style="width: 10rem; height: 2rem;" class="m-2 bg-info rounded">Agregar al carrito</button>
+        <form action="/api/carts/{{@root.cartId}}/products/{{this._id}}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>
     </div>
     {{/each}}
 </div>

@@ -37,7 +37,7 @@ function enviarProducto () {
         code: document.getElementById("code").value,
         stock: document.getElementById("stock").value,
         type: document.getElementById("type").value,
-        img: document.getElementById("img"),
+        img: document.getElementById("img").value
     }
     socket.emit('add', products);
 }

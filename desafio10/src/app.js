@@ -20,7 +20,9 @@ app.set('view engine','handlebars');
 
 import { cartRoutes } from "./routers/cart.routes.js";
 import productRouter from "./routers/products.routes.js";
+import ProductRepository from "./factory/project.repository.js";
 import { productService } from "./controllers/product.service.js";
+import ProductManager from "./controllers/fs/productManager.js";
 import usersRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
@@ -68,10 +70,12 @@ const httpServer = app.listen(config.PORT, () => {
     return console.log(`Listening Port: ${config.PORT}`)
 });
 
+const controller = new ProductRepository(productService)
+
 const socketServer = new Server(httpServer); //servidor para trabajar con sockets.
 
 async function products(socket) {
-    socket.emit('send', await productService.getProducts());
+    socket.emit('send', await controller.get());
 }
 
 socketServer.on ('connection', async (socket) => {
@@ -79,13 +83,13 @@ socketServer.on ('connection', async (socket) => {
     products(socket)
 
     socket.on ('add', async (product) => {
-        await productService.addProduct(product)
-        socket.emit('send', await productService.getProducts());
+        await controller.add(product)
+        socket.emit('send', await controller.get());
         products(socket)
     })
 
     socket.on('delete', async (id) => {
-        await productService.deleteProduct(id);
+        await controller.delete(id);
         products(socket)
     })
 });

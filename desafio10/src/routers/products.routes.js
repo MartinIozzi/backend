@@ -5,8 +5,9 @@ import ProductManager from "../controllers/fs/productManager.js";
 import { productService } from "../controllers/product.service.js";
 
 /*
-Para cambiar de persistencia, en la de ProductManager hay que poner new ProductManager(), 
-en la de productService no, porque no lo exporté como default    */
+Para cambiar de persistencia, en la de ProductManager hay que poner new ProductManager(),
+en la de productService no, porque no lo exporté como default
+*/
 const controller = new ProductRepository(productService);
 const productRouter = Router();
 
