@@ -28,6 +28,7 @@ import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
 import viewsRoutes from "./routers/views.routes.js";
+import chatModel from "../models/chat.model.js"
 
 
 //Cookies
@@ -61,6 +62,21 @@ app.use('/api/products', productRouter);
 app.use('/api/carts', cartRoutes);
 app.use('/api/users', usersRouter);
 
+app.post('/chat', async (req, res) => {
+    try {
+      const { user, message } = req.body;
+      const newMessage = new chatModel({ user, message });
+      await newMessage.save();
+        
+      const messages = await chatModel.find().lean();
+      socketServer.emit('List-Message', messages)   //socketServer definido linea 93
+        
+      res.redirect('/chat')
+    } catch (err) {
+      res.status(500).send(err)
+    }
+});
+
 //Connect MongoDB
 mongoose.connect(config.MONGO_URL);
 
@@ -92,4 +108,15 @@ socketServer.on ('connection', async (socket) => {
         await controller.delete(id);
         products(socket)
     })
+    
+    try {
+		const messages = await chatModel.find().lean();
+		socket.emit('List-Message', messages );
+	} catch (error) {
+		console.error('Error al obtener los mensajes:', error);
+	}
+
+	socket.on('disconnect', () => {
+		console.log('Cliente desconectado');
+	});
 });

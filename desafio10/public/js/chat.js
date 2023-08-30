@@ -1,20 +1,24 @@
 const socket = io();
 
-
 const render = async (data) => {
   const messageHtml = document.getElementById('List-Message');
-  if (data && data.messages && data.messages.length > 0) {
-    data.messages.forEach((message) => {   
-      const messageElement = document.createElement('div');
-      messageElement.innerHTML = `
-      <p>${message.user}</p>
-      <p>Requerimiento: ${message.menssage}</p>
-    `;
-      messageHtml.appendChild(messageElement); 
-    });
-  }
+  if (!(data && data.length > 0)) return;
+  const containerMessages = document.createElement('div')
+  data.forEach(e => {
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = `
+      <div class="bg-white rounded">
+        <p>${e.user} : ${e.message}</p>
+      <div>`;
+    containerMessages.append(messageElement);
+  });
+  messageHtml.appendChild(containerMessages);
 };
 
 socket.on('List-Message', (data) => {
-  render(data); 
+  try {
+    render(data);
+  } catch (error) {
+    console.error('Error during rendering:', error);
+  }
 });

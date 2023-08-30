@@ -10,7 +10,7 @@
 	<body>
 		<nav class='navBar navbar-expand-lg bg-secondary-subtle' style="margin-top: 5px;">
 			<div class='container-fluid' >
-				<h5 style="margin-top: 3px;">Bienvenido {{user.first_name}}<h5>
+				<h5 style="margin-top: 3px;">Bienvenido {{@user.first_name}}<h5>
 				<button
 					class='navbar-toggler'
 					type='button'
@@ -30,11 +30,11 @@
 						{{#if user}}
 							<li class='nav-item'>
 									<img
-										src='{{user.img}}'
+										src='{{@user.img}}'
 										class='img-fluid'
 										style='border-radius: 10px; max-height: 35px; margin-top: 5px;'
 									/> 
-									<p>{{user.first_name}}</p>
+									<p>{{@user.first_name}}</p>
 							</li>
 							<li class='nav-item'>
 								<form action='/api/users/logout' method='post'>
