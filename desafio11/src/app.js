@@ -76,7 +76,7 @@ app.post('/chat', async (req, res) => {
     } catch (err) {
       res.status(500).send(err)
     }
-});
+}); 
 
 app.use(errorManagerMiddleware)
 
