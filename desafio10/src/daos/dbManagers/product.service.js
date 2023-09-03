@@ -1,18 +1,23 @@
-import { productModel } from "../../models/products.model.js";
+import { productModel } from '../../../models/products.model.js';
+import mongoose from 'mongoose';
 
 class ProductService {
     constructor() {
         this.model = productModel;
     }
     async getProducts(){
-        return await this.model.find().lean();
+        try {
+            return await this.model.find().lean();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     async addProduct(product) {
         try {
             return await this.model.create(product)
-        } catch (e) {
-            console.log("error de code", e);
+        } catch (err) {
+            console.log(err);
         }
     }
     
@@ -33,9 +38,23 @@ class ProductService {
         return await this.model.findOne({ _id: id });
     }
 
-    async updateProduct(products) {
-        await this.model.update(products, {returnOriginal: false});
-        save()
+    async updateProduct(id, data) {
+        try {
+            const objectId = new mongoose.Types.ObjectId(id);
+            let product = await this.model.findById(objectId);
+        
+            if(!product){
+                throw new Error('Product not found');
+            } 
+    
+            for (const key in data) {
+                product[key] = data[key];
+            }
+    
+            return await product.save();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async deleteProduct(id) {

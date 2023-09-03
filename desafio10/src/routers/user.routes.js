@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import userService from '../daos/user.service.js';
+import userService from '../daos/dbManagers/user.service.js';
 
 const usersRouter = Router();
 

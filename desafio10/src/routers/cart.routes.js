@@ -1,12 +1,12 @@
 import { Router } from "express";
 import ProductRepository, {UserRepository, CartRepository} from "../repository/project.repository.js";
 //Importo DAOs
-import { productService } from "../daos/product.service.js";   //DB MONGO  
-import ProductManager from "../daos/fs/productManager.js";      //FILE SYSTEM
-import { cartService } from "../daos/cart.service.js";   //DB MONGO
-import cartManager from "../daos/fs/cartManager.js";
-import TicketService from "../daos/ticket.service.js";
-import userService from "../daos/user.service.js";
+import { productService } from "../daos/dbManagers/product.service.js";   //DB MONGO  
+import ProductManager from "../daos/fsManagers/productManager.js";      //FILE SYSTEM
+import { cartService } from "../daos/dbManagers/cart.service.js";   //DB MONGO
+import cartManager from "../daos/fsManagers/cartManager.js";
+import TicketService from "../daos/dbManagers/ticket.service.js";
+import userService from "../daos/dbManagers/user.service.js";
 
 const cartRoutes = Router();
 

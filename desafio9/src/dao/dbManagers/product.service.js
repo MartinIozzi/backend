@@ -1,30 +1,28 @@
-import { productModel } from '../../models/products.model.js';
-import mongoose from 'mongoose';
+import { productModel } from "../../../models/products.model.js";
 
 class ProductService {
     constructor() {
         this.model = productModel;
     }
     async getProducts(){
-        try {
-            return await this.model.find().lean();
-        } catch (error) {
-            console.log(error);
-        }
+        return await this.model.find().lean();
     };
 
     async addProduct(product) {
         try {
             return await this.model.create(product)
-        } catch (err) {
-            console.log(err);
+        } catch (e) {
+            console.log("error de code", e);
         }
     }
     
     async findWithPagination(limit, sort, query, page){
         try {
             const options = {lean: true, page, limit, sort};
+            console.log(options);
             const prods = await this.model.paginate(query, options);
+            console.log(prods);
+            
             return prods;
         } catch (error) {
             console.log(error);
@@ -35,23 +33,9 @@ class ProductService {
         return await this.model.findOne({ _id: id });
     }
 
-    async updateProduct(id, data) {
-        try {
-            const objectId = new mongoose.Types.ObjectId(id);
-            let product = await this.model.findById(objectId);
-        
-            if(!product){
-                throw new Error('Product not found');
-            } 
-    
-            for (const key in data) {
-                product[key] = data[key];
-            }
-    
-            return await product.save();
-        } catch (error) {
-            console.log(error);
-        }
+    async updateProduct(products) {
+        await this.model.update(products, {returnOriginal: false});
+        save()
     }
 
     async deleteProduct(id) {

@@ -4,12 +4,12 @@ import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateCartsError, generateProductsError, generateTicketError } from "../utils/info.js";
 //Importo DAOs
-import { productService } from "../dao/product.service.js";   //DB MONGO  
-import ProductManager from "../dao/fs/productManager.js";    //FILE SYSTEM
-import { cartService } from "../dao/cart.service.js";   //DB MONGO
-import CartManager from "../dao/fs/cartManager.js";    //FILE SYSTEM
-import TicketService from "../dao/ticket.service.js";
-import userService from "../dao/user.service.js";
+import { productService } from "../dao/dbManagers/product.service.js";   //DB MONGO  
+import ProductManager from "../dao/fsManagers/productManager.js";    //FILE SYSTEM
+import { cartService } from "../dao/dbManagers/cart.service.js";   //DB MONGO
+import CartManager from "../dao/fsManagers/cartManager.js";    //FILE SYSTEM
+import TicketService from "../dao/dbManagers/ticket.service.js";
+import userService from "../dao/dbManagers/user.service.js";
 
 const cartRoutes = Router();
 

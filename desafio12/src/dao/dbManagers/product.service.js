@@ -1,4 +1,4 @@
-import { productModel } from '../../models/products.model.js';
+import { productModel } from '../../../models/products.model.js';
 import mongoose from 'mongoose';
 
 class ProductService {
@@ -24,10 +24,7 @@ class ProductService {
     async findWithPagination(limit, sort, query, page){
         try {
             const options = {lean: true, page, limit, sort};
-            console.log(options);
             const prods = await this.model.paginate(query, options);
-            console.log(prods);
-            
             return prods;
         } catch (error) {
             console.log(error);

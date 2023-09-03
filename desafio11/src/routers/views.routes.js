@@ -6,8 +6,8 @@ import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateRenderError } from '../utils/info.js';
 //Importo DAOs
-import { productService } from "../dao/product.service.js";
-import ProductManager from "../dao/fs/productManager.js";
+import { productService } from "../dao/dbManagers/product.service.js";
+import ProductManager from "../dao/fsManagers/productManager.js";
 
 
 const viewsRoutes = Router();

@@ -1,9 +1,9 @@
 import passport from 'passport';
 import local from 'passport-local';
-import userService from '../dao/user.service.js';
+import userService from '../dao/dbManagers/user.service.js';
 import GitHubStrategy from 'passport-github2'
 import { comparePassword, hashPassword } from '../utils/encript.js';
-import { cartService } from '../dao/cart.service.js';
+import { cartService } from '../dao/dbManagers/cart.service.js';
 import config from './config.js';
 
 const LocalStrategy = local.Strategy;

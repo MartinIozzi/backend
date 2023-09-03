@@ -1,6 +1,6 @@
-import userModel from "../../models/user.model.js";
-import cartModel from "../../models/carts.model.js";
-import config from '../config/config.js';
+import userModel from "../../../models/user.model.js";
+import cartModel from "../../../models/carts.model.js";
+import config from '../../config/config.js';
 
 class UserService {
     constructor() {

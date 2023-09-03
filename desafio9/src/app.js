@@ -36,7 +36,7 @@ app.set('view engine','handlebars');
 import { cartRoutes } from "./routers/cart.routes.js";
 import { productRoutes } from "./routers/product.routes.js";
 import viewsRoutes from "./routers/views.routes.js";
-import { productService } from "./controllers/product.service.js";
+import { productService } from "./dao/dbManagers/product.service.js";
 import userRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";

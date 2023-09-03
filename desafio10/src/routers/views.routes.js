@@ -2,8 +2,8 @@ import { Router } from "express";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
 import ProductRepository from "../repository/project.repository.js";
 //Importo DAOs
-import { productService } from "../daos/product.service.js";
-import ProductManager from "../daos/fs/productManager.js";
+import { productService } from "../daos/dbManagers/product.service.js";
+import ProductManager from "../daos/fsManagers/productManager.js";
 
 
 const viewsRoutes = Router();
