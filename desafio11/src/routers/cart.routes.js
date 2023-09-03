@@ -1,15 +1,15 @@
 import { Router } from "express";
-import ProductRepository, {UserRepository, CartRepository} from "../factory/project.repository.js";
+import ProductRepository, {UserRepository, CartRepository} from "../repository/project.repository.js";
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateCartsError, generateProductsError, generateTicketError } from "../utils/info.js";
 //Importo DAOs
-import { productService } from "../controllers/product.service.js";   //DB MONGO  
-import ProductManager from "../controllers/fs/productManager.js";    //FILE SYSTEM
-import { cartService } from "../controllers/cart.service.js";   //DB MONGO
-import CartManager from "../controllers/fs/cartManager.js";    //FILE SYSTEM
-import TicketService from "../controllers/ticket.service.js";
-import userService from "../controllers/user.service.js";
+import { productService } from "../dao/product.service.js";   //DB MONGO  
+import ProductManager from "../dao/fs/productManager.js";    //FILE SYSTEM
+import { cartService } from "../dao/cart.service.js";   //DB MONGO
+import CartManager from "../dao/fs/cartManager.js";    //FILE SYSTEM
+import TicketService from "../dao/ticket.service.js";
+import userService from "../dao/user.service.js";
 
 const cartRoutes = Router();
 

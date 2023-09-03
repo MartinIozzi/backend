@@ -1,11 +1,11 @@
 import { Router } from "express";
-import ProductRepository from "../factory/project.repository.js";
+import ProductRepository from "../repository/project.repository.js";
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateProductsError } from "../utils/info.js";
 //importo DAOs
-import ProductManager from "../controllers/fs/productManager.js";
-import { productService } from "../controllers/product.service.js";
+import ProductManager from "../dao/fs/productManager.js";
+import { productService } from "../dao/product.service.js";
 
 /*
 Para cambiar de persistencia, en la de ProductManager hay que poner new ProductManager(),

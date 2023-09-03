@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
-import ProductRepository from "../factory/project.repository.js";
+import ProductRepository from "../repository/project.repository.js";
 import { generateProducts } from "../utils/generate.js";
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateRenderError } from '../utils/info.js';
 //Importo DAOs
-import { productService } from "../controllers/product.service.js";
-import ProductManager from "../controllers/fs/productManager.js";
+import { productService } from "../dao/product.service.js";
+import ProductManager from "../dao/fs/productManager.js";
 
 
 const viewsRoutes = Router();

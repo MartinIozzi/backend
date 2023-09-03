@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import userService from '../controllers/user.service.js';
+import userService from '../dao/user.service.js';
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateUserInfoError, generateLoginError, generateRegisterError, generateDelogError, generateAuthenticationError } from '../utils/info.js';

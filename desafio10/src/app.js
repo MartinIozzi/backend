@@ -20,9 +20,9 @@ app.set('view engine','handlebars');
 
 import { cartRoutes } from "./routers/cart.routes.js";
 import productRouter from "./routers/products.routes.js";
-import ProductRepository from "./factory/project.repository.js";
-import { productService } from "./controllers/product.service.js";
-import ProductManager from "./controllers/fs/productManager.js";
+import ProductRepository from "./repository/project.repository.js";
+import { productService } from "./daos/product.service.js";
+import ProductManager from "./daos/fs/productManager.js";
 import usersRouter from "./routers/user.routes.js";
 import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";

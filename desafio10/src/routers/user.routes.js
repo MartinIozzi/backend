@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import passport from 'passport';
-import userService from '../controllers/user.service.js';
+import userService from '../daos/user.service.js';
 
 const usersRouter = Router();
 
