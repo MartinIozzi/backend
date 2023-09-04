@@ -6,6 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import passport from "passport";
+import logger from "./middlewares/logger.middleware.js";
 
 const app = express();
 
@@ -28,7 +29,7 @@ import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
 import viewsRoutes from "./routers/views.routes.js";
-import chatModel from "../models/chat.model.js";
+import chatModel from "./models/chat.model.js";
 import errorManagerMiddleware from "./middlewares/errorManager.middleware.js";
 
 
@@ -86,7 +87,7 @@ mongoose.connect(config.MONGO_URL);
 //-------------------------------------------------------//
 
 const httpServer = app.listen(config.PORT, () => {
-    return console.log(`Listening Port: ${config.PORT}`)
+    return logger.info(`Listening Port: ${config.PORT}`)
 });
 
 const controller = new ProductRepository(productService)

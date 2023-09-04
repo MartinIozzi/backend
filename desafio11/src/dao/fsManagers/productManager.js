@@ -2,7 +2,7 @@ import fs from 'fs';
 
 class ProductManager {
     constructor() {
-        this.path = ('./models/json/products.json');
+        this.path = './src/models/json/products.json';
         
         //Creo este código para que si no existe nada en el JSON cree igual lo que vendria siendo el array donde contendría los productos.
         if (!(fs.existsSync(this.path))) {

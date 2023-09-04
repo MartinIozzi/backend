@@ -28,7 +28,7 @@ import passportInit from "./config/passport.config.js";
 import sessionsRoutes from "./routers/sessions.routes.js";
 import config from "./config/config.js";
 import viewsRoutes from "./routers/views.routes.js";
-import chatModel from "../models/chat.model.js"
+import chatModel from "./models/chat.model.js";
 
 
 //Cookies

@@ -2,7 +2,7 @@ import fs from 'fs';
 
 class CartManager {
     constructor() {
-        this.path = "./models/json/carts.json"
+        this.path = './src/models/json/carts.json'
         this.id = 0;
         this.products = [] 
 
