@@ -8,7 +8,7 @@ const render = async (data) => {
     const messageElement = document.createElement('div');
     messageElement.innerHTML = `
       <div class="bg-white rounded">
-        <p>${e.user} : ${e.message}</p>
+        <p style="color: rgb(0, 0, 190);">${e.user} : ${e.message}</p>
       <div>`;
     containerMessages.append(messageElement);
   });

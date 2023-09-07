@@ -53,7 +53,7 @@ cartRoutes.post('/:cid/products/:pid' , async (req, res) => {
     const cartId = req.params.cid;
     try {
         const addedProduct = await controller.add(cartId, productId);
-        res.status(201).send(addedProduct);
+        res.redirect('/')
     } catch (error) {
         res.status(400).json({error: CustomErrors.createError("Error del carrito", generateInvalidTypeError(), 'Invalid Data (Failed to send)', errorsType.INVALID_TYPE)});
     }

@@ -1,5 +1,7 @@
 import { productModel } from '../../models/products.model.js';
 import mongoose from 'mongoose';
+import logger from "../../middlewares/logger.middleware.js";
+
 
 class ProductService {
     constructor() {
@@ -9,15 +11,15 @@ class ProductService {
         try {
             return await this.model.find().lean();
         } catch (error) {
-            console.log(error);
+            logger.error('error al obtener productos', error);
         }
     };
 
     async addProduct(product) {
         try {
             return await this.model.create(product)
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            logger.error('error al agregar productos', error);
         }
     }
     
@@ -27,12 +29,16 @@ class ProductService {
             const prods = await this.model.paginate(query, options);
             return prods;
         } catch (error) {
-            console.log(error);
+            logger.error('error al filtrar productos', error);
         }
     }
 
     async getProductByID(id) {
-        return await this.model.findOne({ _id: id });
+        try {
+            return await this.model.findOne({ _id: id });
+        } catch (error) {
+            logger.error('error al obtener producto por id', error);
+        }
     }
 
     async updateProduct(id, data) {
@@ -50,16 +56,24 @@ class ProductService {
     
             return await product.save();
         } catch (error) {
-            console.log(error);
+            logger.error('error al actualizar productos', error);
         }
     }
 
     async deleteProduct(id) {
-        await this.model.deleteOne({_id: id})
+        try {
+            await this.model.deleteOne({_id: id})
+        } catch (error) {
+            logger.error('error al eliminar productos', error);
+        }
     }
 
     async find(query, limit) {
-        return await this.model.find({type: query}).limit(limit)
+        try {
+            return await this.model.find({type: query}).limit(limit)
+        } catch (error) {
+            logger.error('error al encontrar productos', error);
+        }
     }
 }
 

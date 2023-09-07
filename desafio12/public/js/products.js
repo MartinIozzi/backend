@@ -1,6 +1,5 @@
 const socket = io();
 
-
 socket.on ('send', () => {
   try {
     let botonesEliminar = document.getElementsByClassName("btn-eliminar");

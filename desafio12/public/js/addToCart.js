@@ -4,9 +4,7 @@ function render (products, cid) {
     let html = products.map((elem) => {
         return `
         <form action="/api/carts/${cid}/products/${elem._id}" method="post"><button class="btn btn-warning">Agregar al carrito</button></form>`
-    }).join(' ');
-    document.getElementById('addToCart').innerHTML = html;
-}
+    })};
 
 socket.on ('send', (products) => {
   try {

@@ -1,4 +1,5 @@
 import fs from 'fs';
+import logger from '../../middlewares/logger.middleware.js'
 
 class ProductManager {
     constructor() {
@@ -19,7 +20,7 @@ class ProductManager {
             const actualProducts = await (fs.promises.readFile(this.path, 'utf-8'));
             return JSON.parse(actualProducts);
         } catch (e) {
-            console.log(e);
+            logger.error('error al obtener los productos', error)
         }
     };
 
@@ -28,7 +29,7 @@ class ProductManager {
         try {
             let products = await this.getProducts()
             if(products.find(element => element.code == product.code) != undefined){
-                return console.log('Error al agregar producto: Ya existe el código "' + product.code + '"')
+                return logger.error('Error al agregar producto: Ya existe el código "' + product.code + '"')
             }
         
             
@@ -38,13 +39,12 @@ class ProductManager {
                 id = products[index].id //entonces id vale la id del producto del momento, la cual se verifica con el index y se aplica la id
                 id++    //al verificar eso, para el proximo producto a crear se suma +1 el valor de la ultima id.
             }
-            console.log(product);
             product.id = id.toString();     //el id del producto en el que se estaría trabajando se convierte en string
             products.push(product); 
             this.updateProducts(products);  
 
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            logger.error('error al agregar el producto', error)
         }
     }
 
@@ -52,8 +52,8 @@ class ProductManager {
         try {
             await fs.promises.writeFile(this.path,
                 JSON.stringify(products))
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            logger.error('error al actualizar los productos', error)
         }
 
     }
@@ -62,8 +62,8 @@ class ProductManager {
         try {
             const actualProducts = await this.getProducts()
             return actualProducts.find(element => element.id == id)
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            logger.error('error al obtener el producto por id', error)
         }
 
     }
@@ -74,8 +74,8 @@ class ProductManager {
         try {
             let readCode = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
             return readCode;
-        } catch (e) {
-            console.log(e);  
+        } catch (error) {
+            logger.error('error al leer el archivo .json', error)
         }
 
     }
@@ -89,8 +89,8 @@ class ProductManager {
             products[index] = product;
             fs.writeFileSync(this.path, JSON.stringify(products));
             if(index == -1){return console.log('Error al actualizar producto: No existe la ID: ' + id)}
-        } catch (e) {
-            console.log("No existe la ID: " + id, e)
+        } catch (error) {
+            logger.error('error al actualizar el producto', error)
         }
     }
 
@@ -102,8 +102,8 @@ class ProductManager {
     
             products.splice(index, 1);
             fs.writeFileSync(this.path, JSON.stringify(products));
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            logger.error('error al eliminar el producto', error)
         }
 
     }

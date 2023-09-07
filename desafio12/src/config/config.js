@@ -1,15 +1,21 @@
 import dotenv from 'dotenv';
+import program from './commander.js';
 
-let path = '.env'
+let path = '.env.prod';
+
+if (program.opts().mode === 'dev') {
+	path = '.env.dev';
+}
+
 dotenv.config({ path });
 
 export default {
-	PORT: process.env.PORT || 3000,
+	PORT: process.env.PORT,
 	SECRET_KEY: process.env.SECRET_KEY,
 	MONGO_URL: process.env.MONGO_URL,
 	PERSISTENCE: process.env.PERSISTENCE,
 	clientID: process.env.clientID,
 	clientSecret: process.env.clientSecret,
 	callbackURL: process.env.callbackURL,
-	ENVIROMENT: process.env.ENVIROMENT || "development"
+	NODE_ENV: process.env.NODE_ENV
 };

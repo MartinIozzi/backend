@@ -1,6 +1,7 @@
 import cartModel from "../../models/carts.model.js";
 import { productService } from "./product.service.js";
 import mongoose from "mongoose";
+import logger from "../../middlewares/logger.middleware.js";
 
 class CartService {
     constructor() {
@@ -8,8 +9,12 @@ class CartService {
     }
 
     async getCart(){
-      const carts = await this.model.find();
-      return carts;
+      try {
+        const carts = await this.model.find();
+        return carts;
+      } catch (error) {
+        logger.error('error al obtener los carritos', error)
+      }
     };
 
     async getCartId(cid){
@@ -22,8 +27,7 @@ class CartService {
         const createdCart = await this.model.create({ _id: cartId }); // Asignar el ObjectId al campo _id
         return createdCart._id.toString(); // Devolver el _id como una cadena de texto
       } catch (error) {
-        console.log(error);
-        throw error;
+        logger.error('error al crear el carrito', error)
       }
     }
 
@@ -32,15 +36,15 @@ class CartService {
         const createdCart = await this.model.create({});
         return createdCart;
       } catch (error) {
-        console.log(error);
+        logger.error('error al agregar carrito', error);
       }
     };
 
     async getCartById (cid) {
       try {
         return await this.model.findById(cid).populate('products');
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      logger.error('error al obtener el carrito por id', error);
     }
   }
 
@@ -63,8 +67,8 @@ class CartService {
         cart.products.push({ product: product._id, quantity: 1 });
       }
       return await cart.save();
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      logger.error('error al agregar un producto al carrito', error);
     }
   }
 
@@ -79,8 +83,8 @@ class CartService {
       );
       await cart.save();
       return cart;
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      logger.error('error al eliminar un producto del carrito', error);
     }
   }
 
@@ -94,8 +98,8 @@ class CartService {
       throw new Error('Carrito no encontrado');
     }
     
-  } catch (err){
-    console.log(err);
+  } catch (error){
+    logger.error('error al eliminar todos los productos del carrito', error);
   }
 }
 
@@ -109,7 +113,7 @@ try {
     );
     return updatedCart;
   } catch (error) {
-    console.log('Error: no se pudo actualizar los productos del carrito.');
+    logger.error('no se pudo actualizar los productos del carrito.', error);
   }
 }
 
@@ -123,7 +127,7 @@ async updateProductQuantity(cartId, productId, quantity) {
       cart.products[productIndex].quantity = quantity;
       return await cart.save();
     } else {
-      console.log('Error: el producto no fue encontrado dentro del carrito.');
+      logger.error('el producto no fue encontrado dentro del carrito.');
     }
     }
 }

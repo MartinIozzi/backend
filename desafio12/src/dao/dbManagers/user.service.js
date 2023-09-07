@@ -1,6 +1,7 @@
 import userModel from "../../models/user.model.js"
 import cartModel from "../../models/carts.model.js";
 import config from '../../config/config.js';
+import logger from "../../middlewares/logger.middleware.js";
 
 class UserService {
     constructor() {
@@ -9,35 +10,63 @@ class UserService {
     }
 
     async getAll(){
-        return await this.model.find().lean();
+        try {
+            return await this.model.find().lean();
+        } catch (error) {
+            logger.error('error al traer los usuarios', error);
+        }
     }
 
     async getCurrentUser(req) {
-        const token = req.headers.authorization;   
-        const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
-        const userId = decodedToken.userId;
-        const user = await this.model.findById(userId);
-        return user;
+        try {
+            const token = req.headers.authorization;   
+            const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
+            const userId = decodedToken.userId;
+            const user = await this.model.findById(userId);
+            return user;
+        } catch (error) {
+            logger.error('error al traer el usuario actual', error);
+        }
     }
 
     async getByEmail(email){
-        return await this.model.findOne({email: email});
+        try {
+            return await this.model.findOne({email: email});
+        } catch (error) {
+            logger.error('error al traer el usuario por email', error);
+        }
     }
 
     async getByName(username){
-        return await this.model.findOne({username}).lean();
+        try {
+            return await this.model.findOne({username}).lean();
+        } catch (error) {
+            logger.error('error al traer el usuario por nombre', error);
+        }
     }
 
     async createUser(userData){
-        return await this.model.create(userData);
+        try {
+            return await this.model.create(userData);
+        } catch (error) {
+            logger.error('error al crear el usuario', error);
+        }
     }
 
     async getById(id) {
-		return await this.model.findById(id);
+        try {
+            return await this.model.findById(id);
+        } catch (error) {
+            logger.error('error al traer el usuario por _id', error);
+        }
 	}
     
     async getByCartId(cartId){
-        return await this.model.findOne({cart: cartId}).lean();
+        try {
+            return await this.model.findOne({cart: cartId}).lean();
+        } catch (error) {
+            logger.error('error al traer el carrito del usuario por cartId ', error);
+        }
     }
 }
 

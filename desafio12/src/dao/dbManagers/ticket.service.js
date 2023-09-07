@@ -1,4 +1,6 @@
 import ticketModel from "../../models/ticket.model.js";
+import logger from "../../middlewares/logger.middleware.js";
+
 
 export default class TicketService{
     constructor(){
@@ -17,7 +19,7 @@ export default class TicketService{
             }
             return await this.model.create(ticket)
         } catch (error) {
-            console.log("Error al crear el ticket", error);
+            logger.error('error al crear el ticket', error);
         }
     }
 
@@ -25,7 +27,7 @@ export default class TicketService{
         try {
             return await this.model.find().lean()
         } catch (error) {
-            console.log("Error al traer los tickets", error);
+            logger.error('error al traer los tickets', error);
         }
     }
 
@@ -33,7 +35,7 @@ export default class TicketService{
         try {
             return await this.model.findOne({ _id: id }).lean()
         } catch (error) {
-            console.log("Error al traer el ticket por id", error);
+            logger.error('error al traer el ticket por _id', error);
         }
     }
 }

@@ -1,4 +1,6 @@
 import fs from 'fs';
+import logger from "../../middlewares/logger.middleware.js";
+
 
 class CartManager {
     constructor() {
@@ -22,8 +24,8 @@ class CartManager {
     async updateCart () {  //se escribe el carrito en el JSON del carts.json
         try {
             await fs.promises.writeFile(this.path, JSON.stringify(this.products));
-        } catch (e) {
-            console.log(e);
+        } catch (error) {
+            logger.error('error al actualizar el carrito', error);
         }
     }
 
@@ -31,8 +33,8 @@ class CartManager {
         try {
             const readCart = await fs.promises.readFile(this.path, 'utf-8');
             return JSON.parse(readCart);
-        } catch (e) {
-            console.log(500, e);
+        } catch (error) {
+            logger.error('error al traer el carrito', error);
         }
     };
 
@@ -49,7 +51,7 @@ class CartManager {
             return cartArray;   //se retorna el array de carritos
         }
         catch(e) {
-            console.log("error en el addCart", e);
+            logger.error('error al crear el carrito', error)
         }
     };
 
@@ -82,7 +84,7 @@ class CartManager {
         selecciona la id del producto y eso lo iguala a la cantidad que se le sumó en la variable anterior */
         this.updateCart(); //escribe los productos dentro del json.
         } catch (e) {
-            console.log(e);
+            logger.error('error al agregar un producto al carrito', error)
         }
     }
 }

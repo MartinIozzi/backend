@@ -9,7 +9,7 @@ export default class ProductRepository {
         try {
             return await this.dao.getProducts();
         } catch (error) {
-            console.log(error);
+            logger.error('error al obtener productos', error);
         } 
     }
 
@@ -17,7 +17,7 @@ export default class ProductRepository {
         try {
             return await this.dao.getProductByID(pid);
         } catch (error) {
-            console.log(error);
+            logger.error('error al obtener producto por id', error);
         }
     }
 
@@ -26,7 +26,7 @@ export default class ProductRepository {
             const newProduct = new ProductDTO(product)
             return await this.dao.addProduct(newProduct);
         } catch (error) {
-            console.log(error);
+            logger.error('error al agregar productos', error);
         }
     }
 
@@ -34,7 +34,7 @@ export default class ProductRepository {
         try {
             return await this.dao.updateProduct(id, product);
         } catch (error) {
-            console.log(error);
+            logger.error('error al actualizar productos', error);
         }
     }
 
@@ -42,7 +42,7 @@ export default class ProductRepository {
         try {
             return await this.dao.deleteProduct(id);
         } catch (error) {
-            console.log(error);
+            logger.error('error al eliminar productos', error);
         }
     }
 
@@ -50,7 +50,7 @@ export default class ProductRepository {
         try {
             return await this.dao.findWithPagination(limit, sort, query, page);
         } catch (error) {
-            console.log(error);
+            logger.error('error al filtrar productos', error);
         }
     }
 }
@@ -64,7 +64,7 @@ export class UserRepository {
         try {
             return await this.dao.getAll();
         } catch (error) {
-            console.log(error);
+            logger.error('error al traer los usuarios', error);
         } 
     }
 
@@ -72,7 +72,7 @@ export class UserRepository {
         try {
             return await this.dao.getById(id);
         } catch (error) {
-            console.log(error);
+            logger.error('error al traer el usuario por id', error);
         }
     }
 
@@ -80,7 +80,7 @@ export class UserRepository {
         try {
             return await this.dao.getByCartId(cartId)
         } catch (error) {
-            console.log(error);
+            logger.error('error al traer el carrito del usuario por cartId ', error);
         }
     }
     
@@ -88,7 +88,7 @@ export class UserRepository {
         try {
             return await this.dao.createUser(user);
         } catch (error) {
-            console.log(error);
+            logger.error('error al crear el usuario', error);
         }
     }
 }
@@ -102,7 +102,7 @@ export class CartRepository {
         try {
             return await this.dao.getCart();
         } catch (error) {
-            console.log(error);
+            logger.error('error al obtener los carritos', error)
         } 
     }
 
@@ -110,7 +110,7 @@ export class CartRepository {
         try {
             return await this.dao.getCartById(cartId)
         } catch (error) {
-            console.log(error);
+            logger.error('error al obtener el carrito por id', error);
         }
     }
 
@@ -118,7 +118,7 @@ export class CartRepository {
         try {
             return await this.dao.createCart();
         } catch (error) {
-            console.log(error);
+            logger.error('error al crear el carrito', error)
         }
     }
     
@@ -126,7 +126,7 @@ export class CartRepository {
         try {
             return await this.dao.addProdToCart(cartId, productId);
         } catch (error) {
-            console.log(error);
+            logger.error('error al agregar un producto al carrito', error);
         }
     }
 
@@ -134,7 +134,7 @@ export class CartRepository {
         try {
             return await this.dao.updateCart(id, product);
         } catch (error) {
-            console.log(error);
+            logger.error('no se pudo actualizar los productos del carrito.', error);
         }
     }
 
@@ -142,7 +142,7 @@ export class CartRepository {
         try {
             return await this.dao.deleteAllProd(id);
         } catch (error) {
-            console.log(error);
+            logger.error('error al eliminar todos los productos del carrito', error);
         }
     }
     //----------------------------//
@@ -150,7 +150,7 @@ export class CartRepository {
         try {
             return await this.dao.updateProductQuantity(cartId, productId, quantity);
         } catch (error) {
-            console.log(error);
+            logger.error('el producto no fue encontrado dentro del carrito.');
         }
     }
 
@@ -158,15 +158,7 @@ export class CartRepository {
         try {
             return await this.dao.deleteProdFromCart(prodId, cartId)
         } catch (error) {
-            throw error
-        }
-    }
-
-    async deletePurchasedProducts(cartId, incompletedProducts) {
-        try {
-            return await this.dao.deletePurchasedProducts(cartId, incompletedProducts);
-        } catch (error) {
-            throw error
+            logger.error('error al eliminar un producto del carrito', error);
         }
     }
 }

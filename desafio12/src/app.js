@@ -6,7 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import MongoStore from 'connect-mongo';
 import passport from "passport";
-import logger from "./middlewares/logger.middleware.js";
+import logger, { loggerMiddleware } from "./middlewares/logger.middleware.js";
 
 const app = express();
 
@@ -16,6 +16,8 @@ app.use(express.urlencoded({extended: true}));
 app.engine('handlebars', handlebars.engine());
 app.set('views' , 'views/' );
 app.set('view engine','handlebars');
+app.use(loggerMiddleware)
+app.use(errorManagerMiddleware)
 
 //-------------------------------------------------------//
 
@@ -72,14 +74,28 @@ app.post('/chat', async (req, res) => {
         
       const messages = await chatModel.find().lean();
       socketServer.emit('List-Message', messages)   //socketServer definido linea 93
-        
+
       res.redirect('/chat')
     } catch (err) {
+      req.logger.error('Error al iniciar el chat');
       res.status(500).send(err)
     }
 }); 
 
-app.use(errorManagerMiddleware)
+app.get('/loggerTest', (req, res) => {
+    try {
+      req.logger.fatal('Este es un mensaje fatal');
+      req.logger.error('Este es un mensaje de error');
+      req.logger.warning('Este es un mensaje de advertencia');
+      req.logger.info('Este es un mensaje informativo');
+      req.logger.http('Este es un mensaje HTTP');
+      req.logger.debug('Este es un mensaje de depuración');
+  
+      res.status(200).send('Logs de prueba generados con éxito');
+    } catch (error) {
+      res.status(500).send('Error al generar los logs de prueba');
+    }
+  });
 
 //Connect MongoDB
 mongoose.connect(config.MONGO_URL);
@@ -99,7 +115,7 @@ async function products(socket) {
 }
 
 socketServer.on ('connection', async (socket) => {
-    console.log("Nuevo cliente conectado");
+    logger.info("Nuevo cliente conectado");
     products(socket)
 
     socket.on ('add', async (product) => {
@@ -117,10 +133,10 @@ socketServer.on ('connection', async (socket) => {
 		const messages = await chatModel.find().lean();
 		socket.emit('List-Message', messages );
 	} catch (error) {
-		console.error('Error al obtener los mensajes:', error);
+		req.logger.error('Error al obtener los mensajes');
 	}
 
 	socket.on('disconnect', () => {
-		console.log('Cliente desconectado');
+		logger.info('Cliente desconectado');
 	});
 });
