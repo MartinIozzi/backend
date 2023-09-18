@@ -91,5 +91,22 @@ viewsRoutes.get('/mockingproducts', (req, res) => {
     }
 });
 
+viewsRoutes.get('/mail/:token', (req, res) => {
+    try{
+        const token = req.params;
+        res.render('mail', {title: 'Reestablecer contraseña', token: token.token})
+    } catch (error) {
+        res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
+    }
+})
+
+viewsRoutes.get('/emailsent', (req, res) => {
+    try {
+        res.render('emailsent', { title: 'Se envio email de restablecimiento'});
+    } catch (error) {
+        res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
+    }
+});
+
 
 export default viewsRoutes;

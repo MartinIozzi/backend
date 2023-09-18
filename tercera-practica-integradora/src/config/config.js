@@ -17,5 +17,7 @@ export default {
 	clientID: process.env.clientID,
 	clientSecret: process.env.clientSecret,
 	callbackURL: process.env.callbackURL,
-	NODE_ENV: process.env.NODE_ENV
+	NODE_ENV: process.env.NODE_ENV,
+	EMAIL: process.env.EMAIL,
+	EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
 };

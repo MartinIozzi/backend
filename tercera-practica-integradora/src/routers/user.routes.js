@@ -4,6 +4,10 @@ import userService from '../dao/dbManagers/user.service.js';
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
 import { generateUserInfoError, generateLoginError, generateRegisterError, generateDelogError, generateAuthenticationError } from '../utils/info.js';
+import { transporter } from '../utils/mail.js';
+import logger from '../middlewares/logger.middleware.js';
+import { hashPassword, comparePassword } from '../utils/encript.js';
+import { generateToken } from '../middlewares/jwt.middleware.js';
 
 const usersRouter = Router();
 
@@ -51,5 +55,63 @@ usersRouter.post('/logout', (req, res) => {
 		res.status(500).json({error: CustomErrors.createError("Error de delogueo", generateDelogError(), 'Delog Error', errorsType.DELOGIN_ERROR)});
 	}
 });
+
+usersRouter.post('/mail', async (req, res) => {
+	const uid = req.body;
+	try {
+		const user = await userController.getByEmail(uid.email)
+		const token = generateToken(user);
+
+		const mailOptions = {
+			from: `Testing mail <"martiniozzi103@gmail.com">`,
+			to: "martiniozzi103@gmail.com",
+			subject: 'Test Mail',
+			html: `
+			<div style="background-color: rgb(221, 221, 221); padding: 20px>
+				<h1>Reestablece tu contraseña</h1>
+				<p>Haz solicitado reestrablecer tu contraseña, si fue el caso, haz click en el link que se encuentra a continuación:</p>
+				<a style="background-color: blue; border-radius: 5px; text-decoration: none;" href="http://localhost:8080/mail/${token}">Reestablece tu contraseña</a>
+			</div>
+			`,
+			attachments: [{
+				filename: 'text.txt',
+				content: 'Hello World!'
+			}],
+		  };
+	  
+		  transporter.sendMail(mailOptions, (error, info) => {
+			if (error) {
+				logger.error(error);
+			}
+			logger.info(`Email sent: ` + info.response)});
+		  res.redirect('/emailsent');
+	} catch (error) {
+		res.status(500).json(error);	//cambiar
+}})
+
+usersRouter.post('/resetemail/:token', async (req, res) => {
+	const user = req.params.token;
+	const newPassword = req.body
+	const password = newPassword.password
+
+	try {
+		const decodedUser = jwt.verify(user, privatesecret);
+		const userID = await userService.findById(decodedUser._id)
+
+		if (comparePassword(decodedUser, newPassword.password)) {
+			req.logger.warn(" no puede ser la misma contrasena")
+		}
+
+		const HashPassword = hashPassword(password)
+		userID.password = HashPassword
+		userID.save()
+
+		res.redirect('/login')
+	} catch (error) {
+		//agregar custom de errores//
+		req.logger.error('expiro el tiempo, debe volver a enviar el email')
+	}
+});
+
 
 export default usersRouter;

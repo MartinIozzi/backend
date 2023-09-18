@@ -8,7 +8,6 @@ import MongoStore from 'connect-mongo';
 import passport from "passport";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from 'swagger-ui-express'
-import path from 'path'
 
 const app = express();
 
@@ -34,7 +33,7 @@ import config from "./config/config.js";
 import viewsRoutes from "./routers/views.routes.js";
 import chatModel from "./models/chat.model.js";
 import errorManagerMiddleware from "./middlewares/errorManager.middleware.js";
-import logger, { loggerMiddleware } from "./middlewares/logger.middleware.js";
+import logger from "./middlewares/logger.middleware.js";
 
 
 //Cookies
@@ -85,34 +84,34 @@ app.use('/api/carts', cartRoutes);
 app.use('/api/users', usersRouter);
 
 app.post('/chat', async (req, res) => {
-    try {
-      const { user, message } = req.body;
-      const newMessage = new chatModel({ user, message });
-      await newMessage.save();
-        
-      const messages = await chatModel.find().lean();
-      socketServer.emit('List-Message', messages)   //socketServer definido linea 93
+  try {
+    const { user, message } = req.body;
+    const newMessage = new chatModel({ user, message });
+    await newMessage.save();
+      
+    const messages = await chatModel.find().lean();
+    socketServer.emit('List-Message', messages)   //socketServer definido linea 93
 
-      res.redirect('/chat')
-    } catch (err) {
-      req.logger.error('Error al iniciar el chat');
-      res.status(500).send(err)
-    }
+    res.redirect('/chat')
+  } catch (err) {
+    req.logger.error('Error al iniciar el chat');
+    res.status(500).send(err)
+  }
 });
 
 app.get('/loggerTest', (req, res) => {
-    try {
-      req.logger.fatal('Este es un mensaje fatal');
-      req.logger.error('Este es un mensaje de error');
-      req.logger.warning('Este es un mensaje de advertencia');
-      req.logger.info('Este es un mensaje informativo');
-      req.logger.http('Este es un mensaje HTTP');
-      req.logger.debug('Este es un mensaje de depuración');
-  
-      res.status(200).send('Logs de prueba generados con éxito');
-    } catch (error) {
-      res.status(500).send('Error al generar los logs de prueba');
-    }
+  try {
+    req.logger.fatal('Este es un mensaje fatal');
+    req.logger.error('Este es un mensaje de error');
+    req.logger.warning('Este es un mensaje de advertencia');
+    req.logger.info('Este es un mensaje informativo');
+    req.logger.http('Este es un mensaje HTTP');
+    req.logger.debug('Este es un mensaje de depuración');
+
+    res.status(200).send('Logs de prueba generados con éxito');
+  } catch (error) {
+    res.status(500).send('Error al generar los logs de prueba');
+  }
 });
 
 //Connect MongoDB
