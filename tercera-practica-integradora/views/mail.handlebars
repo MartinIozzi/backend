@@ -1,19 +1,26 @@
 <div class="container-login">
-    <h1>{{title}}</h1>
+    <h3>{{title}}</h3>
     <form action='/api/users/resetemail/{{token}}' method='post' class="row g-3" id="reset-form">
+        <div>
+            <label style="font-weight: bolder;" for="mail" class="form-label">Ingrese su correo electronico</label>
+            <input type="email" class="form-control" name='email' id="email" autocomplete="email">
+            </div>
         <div class="col-md-6">
-            <label for="password" class="form-label">Contraseña</label>
+            <label style="font-weight: bolder;" for="password" class="form-label">Contraseña</label>
             <input type="password" class="form-control" name='password' id="password" autocomplete="new-password">
         </div>
         <div class="col-md-6">
-            <label for="confirm-password" class="form-label">Repita contraseña</label>
+            <label style="font-weight: bolder;" for="confirm-password" class="form-label">Repita contraseña</label>
             <input type="password" class="form-control" name='confirmPassword' id="confirm-password" autocomplete="new-password">
         </div>
         <div class="col-12">
-            <button type="button" class="btn btn-primary" id="submit-button">Restablecer contraseña</button>
+            <button type="button" class="btn btn-success" id="submit-button">Restablecer contraseña</button>
         </div>
     </form>
 </div>
+	<footer class="bg-white" style="height: 50px; padding-top: 10px; margin-top: 10px;">
+		<a class="password" href="/mail{{token}}">Olvidaste tu contraseña? Haz click aquí</a>
+	</footer>
 
 <script src="/js/resetPassword.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

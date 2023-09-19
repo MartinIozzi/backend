@@ -16,6 +16,7 @@ const controller = new ProductRepository(productService)
 viewsRoutes.get ('/', isAuth, async (req, res) => {
     const { user } = req.session;
     const cartId = user.cart;
+    const token = req.params;
     delete user.password;
     
     const limit = parseInt(req.query.limit) || 10;
@@ -26,33 +27,36 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
     try {
         const prods = await controller.find(limit, sort, query, page);
         const productList = await controller.get();
-        res.render('index', {products: productList, user, prods, cartId, title: 'Lista de productos'})
+        res.render('index', {products: productList, user: user, prods, cartId, token: token.token, title: 'Lista de productos'})
       } catch (err) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 });
 
 viewsRoutes.get ('/realtimeproducts', async (req, res) => {
+    const { user } = req.session;
     try {
-        res.render('realTimeProducts', {title: 'Productos en tiempo real'});
+        res.render('realTimeProducts', {title: 'Productos en tiempo real', user: user});
     } catch (err) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 });
 
 viewsRoutes.get ('/products', async (req, res) => {
+    const { user } = req.session;
     const cartId = req.session.user.cart
     const products = await controller.get()
     try {
-        res.render('products', {cartId, products, title: 'Productos'});
+        res.render('products', {cartId, products, user: user, title: 'Productos'});
     } catch (err) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 });
 
 viewsRoutes.get('/carts', async (req, res) => {
+    const { user } = req.session;
     try{
-        res.render('carts', { title: 'Carrito'});
+        res.render('carts', { title: 'Carrito', user: user});
     } catch(err){
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
@@ -75,9 +79,10 @@ viewsRoutes.get('/register', isGuest, (req, res) => {
 });
 
 viewsRoutes.get('/chat', isAuth, (req, res) => {
+    const { user } = req.session;
     try {
-        const user = {user: req.user}
-        res.render('chat', user);
+        const users = {user: req.user}
+        res.render('chat', {users, user: user});
     } catch (error) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
@@ -91,18 +96,19 @@ viewsRoutes.get('/mockingproducts', (req, res) => {
     }
 });
 
-viewsRoutes.get('/mail/:token', (req, res) => {
+viewsRoutes.get('/mail', (req, res) => {
+    const { user } = req.session;
     try{
-        const token = req.params;
-        res.render('mail', {title: 'Reestablecer contraseña', token: token.token})
+        res.render('mail', {title: 'Reestablecer contraseña', user: user})
     } catch (error) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 })
 
 viewsRoutes.get('/emailsent', (req, res) => {
+    const { user } = req.session;
     try {
-        res.render('emailsent', { title: 'Se envio email de restablecimiento'});
+        res.render('emailsent', { title: 'Se envio email de restablecimiento', user: user});
     } catch (error) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }

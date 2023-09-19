@@ -2,6 +2,7 @@ import userModel from "../../models/user.model.js"
 import cartModel from "../../models/carts.model.js";
 import config from '../../config/config.js';
 import logger from "../../middlewares/logger.middleware.js";
+import jwt from 'jsonwebtoken'
 
 class UserService {
     constructor() {
@@ -19,8 +20,8 @@ class UserService {
 
     async getCurrentUser(req) {
         try {
-            const token = req.headers.authorization;   
-            const decodedToken = jwt.verify(token, config.SECRET_KEY); // clave secreta para firmar los tokens
+            const token = req.headers.authorization;
+            const decodedToken = jwt.verify(token, config.SECRET_KEY) // clave secreta para firmar los tokens
             const userId = decodedToken.userId;
             const user = await this.model.findById(userId);
             return user;

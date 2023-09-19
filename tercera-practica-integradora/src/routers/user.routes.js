@@ -56,27 +56,25 @@ usersRouter.post('/logout', (req, res) => {
 	}
 });
 
-usersRouter.post('/mail', async (req, res) => {
-	const uid = req.body;
+usersRouter.get('/mail', async (req, res) => {
+	const { user } = req.session;
+	const userEmail = user.email
+	console.log(userEmail);
 	try {
-		const user = await userController.getByEmail(uid.email)
+		const user = await userService.getByEmail(userEmail)
 		const token = generateToken(user);
-
+		
 		const mailOptions = {
 			from: `Testing mail <"martiniozzi103@gmail.com">`,
 			to: "martiniozzi103@gmail.com",
 			subject: 'Test Mail',
 			html: `
-			<div style="background-color: rgb(221, 221, 221); padding: 20px>
-				<h1>Reestablece tu contraseña</h1>
-				<p>Haz solicitado reestrablecer tu contraseña, si fue el caso, haz click en el link que se encuentra a continuación:</p>
-				<a style="background-color: blue; border-radius: 5px; text-decoration: none;" href="http://localhost:8080/mail/${token}">Reestablece tu contraseña</a>
-			</div>
-			`,
-			attachments: [{
-				filename: 'text.txt',
-				content: 'Hello World!'
-			}],
+				<div style="background-color: rgb(221, 221, 221); padding: 20px>
+					<h1>Reestablece tu contraseña</h1>
+					<p>Haz solicitado reestrablecer tu contraseña, si fue el caso, haz click en el link que se encuentra a continuación:</p>
+					<a style="background-color: blue; border-radius: 5px; text-decoration: none;" href="http://localhost:8080/mail/${token}">Reestablece tu contraseña</a>
+				</div>
+			`
 		  };
 	  
 		  transporter.sendMail(mailOptions, (error, info) => {
@@ -86,7 +84,7 @@ usersRouter.post('/mail', async (req, res) => {
 			logger.info(`Email sent: ` + info.response)});
 		  res.redirect('/emailsent');
 	} catch (error) {
-		res.status(500).json(error);	//cambiar
+		res.status(500).json(error);
 }})
 
 usersRouter.post('/resetemail/:token', async (req, res) => {
@@ -99,7 +97,7 @@ usersRouter.post('/resetemail/:token', async (req, res) => {
 		const userID = await userService.findById(decodedUser._id)
 
 		if (comparePassword(decodedUser, newPassword.password)) {
-			req.logger.warn(" no puede ser la misma contrasena")
+			req.logger.warn("No puede ser la misma contraseña")
 		}
 
 		const HashPassword = hashPassword(password)
