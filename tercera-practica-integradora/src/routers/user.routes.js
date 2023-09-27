@@ -8,6 +8,11 @@ import { transporter } from '../utils/mail.js';
 import logger from '../middlewares/logger.middleware.js';
 import { hashPassword, comparePassword } from '../utils/encript.js';
 import { generateToken } from '../middlewares/jwt.middleware.js';
+import userModel from '../models/user.model.js';
+import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
+
+const privatekey = config.SECRET_KEY;
 
 const usersRouter = Router();
 
@@ -56,58 +61,58 @@ usersRouter.post('/logout', (req, res) => {
 	}
 });
 
-usersRouter.get('/mail', async (req, res) => {
+usersRouter.post('/mail', async (req, res) => {
 	const { user } = req.session;
 	const userEmail = user.email
-	console.log(userEmail);
 	try {
-		const user = await userService.getByEmail(userEmail)
+		const userMail = await userService.getByEmail(userEmail)
 		const token = generateToken(user);
 		
 		const mailOptions = {
-			from: `Testing mail <"martiniozzi103@gmail.com">`,
-			to: "martiniozzi103@gmail.com",
-			subject: 'Test Mail',
+			from: 'Reestablecer contraseña <martiniozzi103@gmail.com>',
+			to: userMail.email,
+			subject: 'Reestablecimiento de contraseña',
 			html: `
-				<div style="background-color: rgb(221, 221, 221); padding: 20px>
-					<h1>Reestablece tu contraseña</h1>
-					<p>Haz solicitado reestrablecer tu contraseña, si fue el caso, haz click en el link que se encuentra a continuación:</p>
-					<a style="background-color: blue; border-radius: 5px; text-decoration: none;" href="http://localhost:8080/mail/${token}">Reestablece tu contraseña</a>
-				</div>
+			  <div style="background-color: rgb(243, 215, 179); padding: 20px;">
+				<h1>Reestablece tu contraseña</h1>
+				<p>Haz solicitado reestablecer tu contraseña, si fue el caso, haz click en el link que se encuentra a continuación:</p>
+				<a style="border-radius: 2px; text-decoration: none;" href="http://localhost:8080/mail/${token}"><button>Reestablece tu contraseña</button></a>
+			  </div>
 			`
 		  };
-	  
+		  
+		  
 		  transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {
 				logger.error(error);
 			}
-			logger.info(`Email sent: ` + info.response)});
+			logger.info(`Email sent: ` + info)});
 		  res.redirect('/emailsent');
 	} catch (error) {
 		res.status(500).json(error);
 }})
 
 usersRouter.post('/resetemail/:token', async (req, res) => {
-	const user = req.params.token;
-	const newPassword = req.body
-	const password = newPassword.password
+	const actualUser = req.params.token;
+	const newPassword = req.body.password;
 
 	try {
-		const decodedUser = jwt.verify(user, privatesecret);
-		const userID = await userService.findById(decodedUser._id)
+		const decodedUser = jwt.verify(actualUser, privatekey);
+		const userId = await userModel.findById(decodedUser._id)
 
-		if (comparePassword(decodedUser, newPassword.password)) {
-			req.logger.warn("No puede ser la misma contraseña")
-		}
+		const hashedPasswordFromDB = userId;
 
-		const HashPassword = hashPassword(password)
-		userID.password = HashPassword
-		userID.save()
+		if (comparePassword(hashedPasswordFromDB, newPassword)) {
+			req.logger.warn("No puede ser la misma contraseña");
+		  }		  
+
+		const hashedPass = hashPassword(newPassword)
+		userId.password = hashedPass
+		userId.save()
 
 		res.redirect('/login')
 	} catch (error) {
-		//agregar custom de errores//
-		req.logger.error('expiro el tiempo, debe volver a enviar el email')
+		console.log(error);
 	}
 });
 

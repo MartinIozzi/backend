@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { isAuth, isGuest } from "../middlewares/auth.middleware.js";
 import ProductRepository from "../repository/project.repository.js";
+import { CartRepository } from "../repository/project.repository.js";
 import { generateProducts } from "../utils/generate.js";
 import errorsType from '../utils/errors.js';
 import CustomErrors from '../utils/customErrors.js';
@@ -8,10 +9,12 @@ import { generateRenderError } from '../utils/info.js';
 //Importo DAOs
 import { productService } from "../dao/dbManagers/product.service.js";
 import ProductManager from "../dao/fsManagers/productManager.js";
+import { cartService } from "../dao/dbManagers/cart.service.js";
 
 
 const viewsRoutes = Router();
-const controller = new ProductRepository(productService)
+const prodController = new ProductRepository(productService)
+const cartController = new CartRepository(cartService)
 
 viewsRoutes.get ('/', isAuth, async (req, res) => {
     const { user } = req.session;
@@ -25,15 +28,15 @@ viewsRoutes.get ('/', isAuth, async (req, res) => {
     const page = parseInt(req.query.page) || 1;
 
     try {
-        const prods = await controller.find(limit, sort, query, page);
-        const productList = await controller.get();
+        const prods = await prodController.find(limit, sort, query, page);
+        const productList = await prodController.get();
         res.render('index', {products: productList, user: user, prods, cartId, token: token.token, title: 'Lista de productos'})
       } catch (err) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 });
 
-viewsRoutes.get ('/realtimeproducts', async (req, res) => {
+viewsRoutes.get('/realtimeproducts', async (req, res) => {
     const { user } = req.session;
     try {
         res.render('realTimeProducts', {title: 'Productos en tiempo real', user: user});
@@ -42,10 +45,10 @@ viewsRoutes.get ('/realtimeproducts', async (req, res) => {
     }
 });
 
-viewsRoutes.get ('/products', async (req, res) => {
+viewsRoutes.get('/products', async (req, res) => {
     const { user } = req.session;
     const cartId = req.session.user.cart
-    const products = await controller.get()
+    const products = await prodController.get()
     try {
         res.render('products', {cartId, products, user: user, title: 'Productos'});
     } catch (err) {
@@ -55,8 +58,10 @@ viewsRoutes.get ('/products', async (req, res) => {
 
 viewsRoutes.get('/carts', async (req, res) => {
     const { user } = req.session;
+    const byId = user.cart;
     try{
-        res.render('carts', { title: 'Carrito', user: user});
+        const userCartById = await cartController.getById(byId)
+        res.render('carts', { title: 'Carrito', user: user, userCartById});
     } catch(err){
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
@@ -64,7 +69,7 @@ viewsRoutes.get('/carts', async (req, res) => {
 
 viewsRoutes.get('/login', isGuest, (req, res) => {
     try{
-        res.render('login', {title: 'Inicio de sesión'});
+        res.render('login', {title: 'Inicio de sesión', showNavbar: false});
     }catch(err){
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
@@ -96,10 +101,11 @@ viewsRoutes.get('/mockingproducts', (req, res) => {
     }
 });
 
-viewsRoutes.get('/mail', (req, res) => {
+viewsRoutes.get('/mail/:token', (req, res) => {
     const { user } = req.session;
+    const token = req.params;
     try{
-        res.render('mail', {title: 'Reestablecer contraseña', user: user})
+        res.render('mail', {title: 'Reestablecer contraseña', user: user, token: token.token})
     } catch (error) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
@@ -107,12 +113,21 @@ viewsRoutes.get('/mail', (req, res) => {
 
 viewsRoutes.get('/emailsent', (req, res) => {
     const { user } = req.session;
+    const userEmail = user.email
     try {
-        res.render('emailsent', { title: 'Se envio email de restablecimiento', user: user});
+        res.render('emailsent', { title: 'Se envio email de restablecimiento', user: user, userEmail: userEmail});
     } catch (error) {
         res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
     }
 });
 
+viewsRoutes.get('/resetpassword', (req, res) => {
+    const { user } = req.session;
+    try {
+        res.render('resetpassword', {title: 'Restablecer contraseña', user: user});
+    } catch (error) {
+        res.status(500).json(CustomErrors.createError("Error de renderizado", generateRenderError(), 'Render Error', errorsType.RENDER_ERROR));
+    }
+})
 
 export default viewsRoutes;

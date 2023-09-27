@@ -28,6 +28,12 @@ export const productSchema = new mongoose.Schema({
     },
     img: {
         type: String
+    },
+    owner: {
+        type: String,
+        ref: 'user',
+        required: true,
+        default: "admin"
     }
 })
 

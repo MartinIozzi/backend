@@ -6,7 +6,7 @@ function render (products) {
         return `<hr>
                 <h3 class="nameProduct">Nombre: ${elem.name}</h3>
                 <p>Descripcion: ${elem.description}</p>
-                <p>Precio: ${elem.price}</p>
+                <p>Precio: $ ${elem.price}</p>
                 <p>Codigo del producto: ${elem.code}</p>
                 <p>Stock restante: ${elem.stock} productos</p>
                 <p>Tipo de producto: ${elem.type}</p>
@@ -28,19 +28,3 @@ socket.on ('send', (products) => {
     });
 });
 });
-
-function enviarProducto () {
-    let products = {
-        name: document.getElementById("name").value,
-        description: document.getElementById("description").value,
-        price: document.getElementById("price").value,
-        code: document.getElementById("code").value,
-        stock: document.getElementById("stock").value,
-        type: document.getElementById("type").value,
-        img: document.getElementById("img").value
-    }
-    socket.emit('add', products);
-}
-
-let botonEnviar = document.getElementById("boton")
-botonEnviar.addEventListener('click', enviarProducto)

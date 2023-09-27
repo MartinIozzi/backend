@@ -19,23 +19,6 @@ app.set('views' , 'views/' );
 app.set('view engine','handlebars');
 app.use(errorManagerMiddleware)
 
-//-------------------------------------------------------//
-
-import { cartRoutes } from "./routers/cart.routes.js";
-import productRouter from "./routers/products.routes.js";
-import ProductRepository from "./repository/project.repository.js";
-import { productService } from "./dao/dbManagers/product.service.js";
-import ProductManager from "./dao/fsManagers/productManager.js";
-import usersRouter from "./routers/user.routes.js";
-import passportInit from "./config/passport.config.js";
-import sessionsRoutes from "./routers/sessions.routes.js";
-import config from "./config/config.js";
-import viewsRoutes from "./routers/views.routes.js";
-import chatModel from "./models/chat.model.js";
-import errorManagerMiddleware from "./middlewares/errorManager.middleware.js";
-import logger from "./middlewares/logger.middleware.js";
-
-
 //Cookies
 app.use(cookieParser(config.SECRET_KEY));
 
@@ -55,6 +38,31 @@ app.use(
     saveUninitialized: true,
 }))
 
+//Passport
+passportInit();
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(loggerMiddleware);
+
+//-------------------------------------------------------//
+
+import { cartRoutes } from "./routers/cart.routes.js";
+import productRouter from "./routers/products.routes.js";
+import ProductRepository from "./repository/project.repository.js";
+import { productService } from "./dao/dbManagers/product.service.js";
+import ProductManager from "./dao/fsManagers/productManager.js";
+import usersRouter from "./routers/user.routes.js";
+import passportInit from "./config/passport.config.js";
+import sessionsRoutes from "./routers/sessions.routes.js";
+import config from "./config/config.js";
+import viewsRoutes from "./routers/views.routes.js";
+import chatModel from "./models/chat.model.js";
+import errorManagerMiddleware from "./middlewares/errorManager.middleware.js";
+import logger from "./middlewares/logger.middleware.js";
+import { loggerMiddleware } from "./middlewares/logger.middleware.js";
+
+
+
 //Config de Swagger
 const swaggerOptions = {
   swaggerDefinition: {
@@ -68,12 +76,6 @@ const swaggerOptions = {
   apis: ['**/docs/*.yaml']
 };
 const specs = swaggerJsDoc(swaggerOptions)
-
-//Passport
-passportInit();
-app.use(passport.initialize());
-app.use(passport.session());
-//app.use(loggerMiddleware);
 
 //Rutas de MongoDB
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(specs));
@@ -157,3 +159,5 @@ socketServer.on ('connection', async (socket) => {
 		logger.info('Cliente desconectado');
 	});
 });
+
+global.socketServer = socketServer;
